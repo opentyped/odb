@@ -1,0 +1,1 @@
+CREATE TABLE descending (id INTEGER PRIMARY KEY DESC, name TEXT);

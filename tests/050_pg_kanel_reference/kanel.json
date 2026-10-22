@@ -1,0 +1,6 @@
+{
+  "schemas": ["public", "billing"],
+  "enumStyle": "type",
+  "resolveViews": true,
+  "tsModuleFormat": "esm"
+}

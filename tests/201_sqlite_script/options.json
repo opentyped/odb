@@ -1,0 +1,6 @@
+{
+  "dialect": "sqlite",
+  "identifiers": false,
+  "steps": true,
+  "fileSource": true
+}

@@ -1,0 +1,7 @@
+CREATE TABLE Parent ("Id" INTEGER PRIMARY KEY) STRICT;
+
+CREATE TABLE Child (
+  "Id" INTEGER PRIMARY KEY,
+  "ParentId" INTEGER NOT NULL REFERENCES parent (id),
+  "Name" TEXT NOT NULL CHECK (length(name) >= 3)
+) STRICT;

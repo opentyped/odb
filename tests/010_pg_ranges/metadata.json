@@ -1,0 +1,12 @@
+{
+  "types": {
+    "public.rating_range": {
+      "kind": "range",
+      "element": "pg_catalog.int4"
+    },
+    "public.rating_multirange": {
+      "kind": "multirange",
+      "element": "pg_catalog.int4"
+    }
+  }
+}

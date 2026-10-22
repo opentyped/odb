@@ -1,0 +1,4 @@
+{
+  "dialect": "pg",
+  "prefix": "odb/../models"
+}

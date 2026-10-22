@@ -1,0 +1,15 @@
+{
+  "dialect": "pg",
+  "identifiers": true,
+  "columns": {
+    "public.parent.typed_data": {
+      "select": "import('~/payload').Payload",
+      "insert": "string",
+      "annotations": {
+        "jsonSchema": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

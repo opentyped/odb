@@ -1,0 +1,9 @@
+ATTACH DATABASE ':memory:' AS billing;
+
+CREATE TABLE main.user (id INTEGER PRIMARY KEY) STRICT;
+
+CREATE TABLE main.profile (user_id INTEGER NOT NULL REFERENCES user (id)) STRICT;
+
+CREATE TABLE billing.user (id INTEGER PRIMARY KEY) STRICT;
+
+CREATE TABLE billing.profile (user_id INTEGER NOT NULL REFERENCES user (id)) STRICT;

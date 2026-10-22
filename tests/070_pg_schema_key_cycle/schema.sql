@@ -1,0 +1,10 @@
+CREATE SCHEMA a;
+
+CREATE SCHEMA b;
+
+CREATE TABLE a.item (id integer PRIMARY KEY);
+
+CREATE TABLE b.item (id integer PRIMARY KEY REFERENCES a.item (id));
+
+ALTER TABLE a.item
+ADD FOREIGN KEY (id) REFERENCES b.item (id);

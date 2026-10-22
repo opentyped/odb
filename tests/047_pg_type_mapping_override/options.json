@@ -1,0 +1,10 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.amount": {
+      "select": "import('~/types').Decimal",
+      "insert": "string"
+    }
+  }
+}

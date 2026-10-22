@@ -1,0 +1,8 @@
+CREATE TABLE composite (a TEXT, b INTEGER, PRIMARY KEY (a, b)) WITHOUT ROWID,
+STRICT;
+
+CREATE TABLE link (
+  a TEXT,
+  b INTEGER,
+  FOREIGN KEY (a, b) REFERENCES composite
+);

@@ -1,0 +1,8 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.money": "import('~/money').Money",
+    "billing.money": "import('~/money').BillingMoney"
+  }
+}

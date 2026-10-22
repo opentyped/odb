@@ -1,0 +1,5 @@
+CREATE TABLE ordinary (
+  id TEXT PRIMARY KEY,
+  version INTEGER,
+  "PRIMARY_KEY_NOT_A_CONSTRAINT" TEXT
+);

@@ -1,0 +1,1 @@
+Generated name collision: MyTable; configure name(relation)

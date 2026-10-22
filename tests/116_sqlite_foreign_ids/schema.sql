@@ -1,0 +1,6 @@
+CREATE TABLE account (id INTEGER PRIMARY KEY) STRICT;
+
+CREATE TABLE note (
+  id INTEGER PRIMARY KEY,
+  account_id INTEGER REFERENCES account (id)
+) STRICT;

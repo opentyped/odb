@@ -1,0 +1,10 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "pg_catalog._numeric": {
+      "select": "PgArray<string>",
+      "insert": "PgArray<string | number>"
+    }
+  }
+}

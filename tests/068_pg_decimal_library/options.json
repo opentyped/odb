@@ -1,0 +1,10 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.monetary": {
+      "select": "import('decimal.js').Decimal",
+      "insert": "import('decimal.js').Decimal | string"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "relations": {
+    "billing.account": {
+      "columns": {
+        "account_id": {
+          "references": [
+            {
+              "schema": "public",
+              "relation": "account",
+              "column": "id"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

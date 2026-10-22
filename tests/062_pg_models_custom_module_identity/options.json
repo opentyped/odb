@@ -1,0 +1,7 @@
+{
+  "dialect": "pg",
+  "identifiers": true,
+  "columns": {
+    "public.users.id": "import('~/types').UserID"
+  }
+}

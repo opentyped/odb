@@ -1,0 +1,10 @@
+CREATE TABLE source (name TEXT NOT NULL) STRICT;
+
+CREATE VIEW compound AS
+SELECT
+  name AS value
+FROM
+  source
+UNION ALL
+SELECT
+  42;

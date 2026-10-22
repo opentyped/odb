@@ -1,0 +1,7 @@
+{
+  "dialect": "pg",
+  "identifiers": true,
+  "columns": {
+    "public.account.id": "import('~/types').AccountId"
+  }
+}

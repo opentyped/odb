@@ -1,0 +1,8 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "extensions": ["ltree"],
+  "types": {
+    "public.ltree": "import('~/types').TreePath"
+  }
+}

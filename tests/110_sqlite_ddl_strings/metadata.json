@@ -1,0 +1,18 @@
+{
+  "relations": {
+    "main.tricky": {
+      "checks": [
+        {
+          "name": "check_1",
+          "expression": "\n    length(value) > 1\n    OR value = 'x'\n  ",
+          "columns": ["value"]
+        },
+        {
+          "name": "valid",
+          "expression": "length(note) <= 20",
+          "columns": ["note"]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "dialect": "sqlite",
+  "identifiers": false,
+  "integers": "bigint",
+  "bigintMetadata": true
+}

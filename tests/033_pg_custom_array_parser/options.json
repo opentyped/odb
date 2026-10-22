@@ -1,0 +1,7 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public._flag": "import('~/types').Flags"
+  }
+}

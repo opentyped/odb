@@ -1,0 +1,10 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.monetary": {
+      "select": "import('./types/monetary.js').Monetary",
+      "insert": "import('./types/monetary.js').MonetaryInput"
+    }
+  }
+}

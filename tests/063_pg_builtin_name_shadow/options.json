@@ -1,0 +1,7 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.money": "import('~/types').Money"
+  }
+}

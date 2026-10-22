@@ -1,0 +1,1 @@
+No mapping for public.ltree; configure types["public.ltree"] for your driver parser

@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "repeat": true,
+  "prefix": "custom/odb"
+}

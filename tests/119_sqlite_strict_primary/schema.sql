@@ -1,0 +1,1 @@
+CREATE TABLE strict_key (id TEXT PRIMARY KEY, name TEXT) STRICT;

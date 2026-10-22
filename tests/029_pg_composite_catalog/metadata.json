@@ -1,0 +1,24 @@
+{
+  "types": {
+    "public.money_value": {
+      "kind": "composite",
+      "columns": {
+        "amount": {
+          "type": "pg_catalog.numeric"
+        },
+        "currency": {
+          "annotations": {
+            "maxLength": 3
+          }
+        }
+      }
+    },
+    "public.asset": {
+      "columns": {
+        "money": {
+          "type": "public.money_value"
+        }
+      }
+    }
+  }
+}

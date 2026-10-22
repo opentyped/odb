@@ -1,0 +1,8 @@
+package-lock.json
+**/dist/
+tests/.output/
+examples/**/generated/
+tests/.golden-*/
+tests/**/models.d.ts
+tests/**/kysely.d.ts
+tests/*/kanel/

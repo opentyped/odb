@@ -1,0 +1,12 @@
+{
+  "types": {
+    "public.display_label": {
+      "kind": "domain",
+      "base": "public.label",
+      "default": "'new'::character varying"
+    },
+    "public.label": {
+      "nullable": false
+    }
+  }
+}

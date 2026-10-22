@@ -1,0 +1,17 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "plugins": ["prettier-plugin-embed", "prettier-plugin-sql"],
+  "embeddedSqlTags": ["sql"],
+  "language": "postgresql",
+  "keywordCase": "upper",
+  "overrides": [
+    {
+      "files": "tests/1*/**/*.sql",
+      "options": {
+        "language": "sqlite"
+      }
+    }
+  ]
+}

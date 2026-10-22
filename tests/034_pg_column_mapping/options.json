@@ -1,0 +1,21 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "columns": {
+    "public.profile.id": "import('~/types').ProfileId",
+    "public.profile.metadata": {
+      "select": "import('~/types').Metadata",
+      "insert": "string",
+      "annotations": {
+        "jsonSchema": {
+          "type": "object"
+        }
+      }
+    },
+    "public.profile.secret": {
+      "select": "string",
+      "insert": "never",
+      "update": "never"
+    }
+  }
+}

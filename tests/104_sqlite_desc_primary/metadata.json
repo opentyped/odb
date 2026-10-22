@@ -1,0 +1,12 @@
+{
+  "relations": {
+    "main.descending": {
+      "columns": {
+        "id": {
+          "identity": null,
+          "nullable": true
+        }
+      }
+    }
+  }
+}

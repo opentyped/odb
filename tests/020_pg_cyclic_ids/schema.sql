@@ -1,0 +1,8 @@
+CREATE TABLE a (id integer PRIMARY KEY);
+
+CREATE TABLE b (id integer PRIMARY KEY REFERENCES a (id));
+
+ALTER TABLE a
+ADD FOREIGN KEY (id) REFERENCES b (id);
+
+CREATE TABLE c (id integer REFERENCES a (id));

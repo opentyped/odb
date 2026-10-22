@@ -1,0 +1,10 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "types": {
+    "public.monetary": "import('decimal.js').Decimal"
+  },
+  "columns": {
+    "public.wallet.replaced": "import('./types.js').Money"
+  }
+}

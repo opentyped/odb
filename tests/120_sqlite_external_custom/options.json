@@ -1,0 +1,11 @@
+{
+  "dialect": "sqlite",
+  "identifiers": false,
+  "columns": {
+    "main.custom.id": "import('./types.js').CustomId",
+    "main.custom.payload": {
+      "select": "import('./types.js').Payload",
+      "insert": "string"
+    }
+  }
+}

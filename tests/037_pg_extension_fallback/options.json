@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "extensions": ["hstore"],
+  "unknownType": "unknown"
+}

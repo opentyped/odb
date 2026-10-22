@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+*.tgz
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+tests/.output/
+tests/.golden-*/
+.release/
+examples/**/generated/

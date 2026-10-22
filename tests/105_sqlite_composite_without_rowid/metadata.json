@@ -1,0 +1,17 @@
+{
+  "relations": {
+    "main.link": {
+      "columns": {
+        "b": {
+          "references": [
+            {
+              "schema": "main",
+              "relation": "composite",
+              "column": "b"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
