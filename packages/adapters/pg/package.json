@@ -1,6 +1,6 @@
 {
   "name": "@opentyped/odb-adapters-pg",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "engines": {
     "node": ">=22.13"
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@opentyped/odb-db": "0.1.0"
+    "@opentyped/odb-db": "0.1.1"
   },
   "peerDependencies": {
     "pg": ">=8 <9"
