@@ -4,6 +4,12 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type LabelList = PgArray<string>;
+
+  export type Status = "open" | "closed";
+
+  export type StatusKind = "open" | "closed";
+
   /**
    * @schema
    */
@@ -16,10 +22,6 @@ declare module "odb/public" {
      * @required true
      */
     "labels": PgArray<string>;
-  }
-
-  export interface Database {
-    "domain_value": DomainValue;
   }
 }
 

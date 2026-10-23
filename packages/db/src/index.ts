@@ -4,6 +4,8 @@ export { defineConfig, generate } from '~/generate';
 export {
   declarationFile,
   schemaDeclarations,
+  declarationModules,
+  typeDeclarations,
   documentation,
   propertyDeclaration,
   valueDeclarations,

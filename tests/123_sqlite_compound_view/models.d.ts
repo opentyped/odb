@@ -23,11 +23,6 @@ declare module "odb/main" {
      */
     "name": string;
   }
-
-  export interface Database {
-    "compound": Compound;
-    "source": Source;
-  }
 }
 
 declare module "odb" {

@@ -30,7 +30,7 @@ declare module "odb/kysely/public" {
     /**
      * @required true
      */
-    "elapsed": ColumnType<({ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number }) | null, ((string) | null) | undefined, (string) | null>;
+    "elapsed": ColumnType<({ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number; milliseconds?: number }) | null, ((string) | null) | undefined, (string) | null>;
     /**
      * @required true
      */
@@ -42,10 +42,6 @@ declare module "odb/kysely/public" {
   export type NewTemporal = Insertable<TemporalTable>;
 
   export type TemporalUpdate = Updateable<TemporalTable>;
-
-  export interface Database {
-    "temporal": TemporalTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -34,10 +34,6 @@ declare module "odb/kysely/public" {
   export type NewLimited = Insertable<LimitedTable>;
 
   export type LimitedUpdate = Updateable<LimitedTable>;
-
-  export interface Database {
-    "limited": LimitedTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -34,12 +34,18 @@ export interface Column {
   identity: 'always' | 'byDefault' | null;
   generated: boolean;
   primaryKey: boolean;
+  /** Partition routing column, including keys inherited from partitioned ancestors. */
+  partitionKey?: boolean;
   references: readonly Reference[];
+  /** Unchanged source column of a view or partition parent, proven by the adapter. */
+  source?: Reference;
   comment: string | null;
   annotations: Annotations;
 }
 
 export interface Relation {
+  /** False retains dependency metadata without exporting this relation. */
+  exported?: boolean;
   schema: string;
   name: string;
   kind: 'table' | 'view' | 'materializedView' | 'foreignTable';
@@ -49,6 +55,8 @@ export interface Relation {
 }
 
 interface TypeBase {
+  /** Export this user-defined SQL type, including when unused by tables. */
+  exported?: boolean;
   id: string;
   schema: string;
   name: string;
@@ -81,7 +89,39 @@ export interface TypeMapping {
   annotations?: Annotations;
 }
 
+export interface RoutineParameter {
+  name: string;
+  type: string;
+  mode: 'i' | 'o' | 'b' | 'v' | 't';
+  optional: boolean;
+}
+
+export interface Routine {
+  id: string;
+  schema: string;
+  name: string;
+  signature: string;
+  kind: 'function' | 'procedure';
+  parameters: readonly RoutineParameter[];
+  returnType: string;
+  setReturning: boolean;
+  comment: string | null;
+}
+
+export interface ResolvedRoutine {
+  schema: string;
+  name: string;
+  signature: string;
+  comment: string | null;
+  parameters: readonly { name: string; value: string; optional: boolean }[];
+  result: string;
+  fields?: readonly { name: string; value: string }[];
+  rowFields?: readonly { name: string; value: string }[];
+  setReturning: boolean;
+}
+
 export interface Database {
+  routines?: readonly Routine[];
   dialect: 'pg' | 'sqlite';
   types: readonly DatabaseType[];
   relations: readonly Relation[];
@@ -95,6 +135,11 @@ export interface Source {
 }
 
 export interface ResolveOptions {
+  /** Match schema-qualified SQL relation, type, and routine names. Supports * and ?. */
+  include?: readonly string[];
+  exclude?: readonly string[];
+  /** Match the standard Kysely CamelCasePlugin names; configure that plugin at runtime. */
+  camelCase?: boolean;
   /** Qualified SQL names, e.g. public.monetary. Applied before domain/array expansion. */
   types?: Readonly<Record<string, string | TypeMapping>>;
   /** Qualified schema.table.column names; take precedence over type mappings. */
@@ -105,11 +150,14 @@ export interface ResolveOptions {
   unknownType?: string;
   /** Default uses PascalCase within each schema. Collisions are errors. */
   name?: (relation: Relation) => string;
+  typeName?: (type: DatabaseType) => string;
+  routineName?: (routine: Routine, overload: number) => string;
 }
 
 export type Identity = string | { schema: string; name: string };
 
 export interface ResolvedColumn extends Column {
+  propertyName?: string;
   identifiers?: readonly Identity[];
   value: { select: string; insert: string; update: string };
   insertOptional: boolean;
@@ -128,7 +176,19 @@ export interface Identifier {
   brand: string;
 }
 
-export interface ResolvedDatabase extends Omit<Database, 'relations'> {
+export interface ResolvedDefinition {
+  schema: string;
+  name: string;
+  kind: DatabaseType['kind'];
+  comment: string | null;
+  annotations: Annotations;
+  value: TypeMapping;
+  fields?: readonly ResolvedColumn[];
+}
+
+export interface ResolvedDatabase extends Omit<Database, 'relations' | 'routines'> {
+  routines: readonly ResolvedRoutine[];
+  definitions: readonly ResolvedDefinition[];
   identifiers: readonly Identifier[];
   relations: readonly ResolvedRelation[];
 }

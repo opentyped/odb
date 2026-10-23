@@ -39,11 +39,6 @@ declare module "odb/kysely/main" {
   export type NewLink = Insertable<LinkTable>;
 
   export type LinkUpdate = Updateable<LinkTable>;
-
-  export interface Database {
-    "composite": CompositeTable;
-    "link": LinkTable;
-  }
 }
 
 declare module "odb/kysely" {

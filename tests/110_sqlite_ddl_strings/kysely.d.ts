@@ -23,10 +23,6 @@ declare module "odb/kysely/main" {
   export type NewTricky = Insertable<TrickyTable>;
 
   export type TrickyUpdate = Updateable<TrickyTable>;
-
-  export interface Database {
-    "tricky": TrickyTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -13,10 +13,6 @@ declare module "odb/billing" {
      */
     "id": number;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb/main" {
@@ -33,10 +29,6 @@ declare module "odb/main" {
      */
     "id": number;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb/temp" {
@@ -52,10 +44,6 @@ declare module "odb/temp" {
      * @required true
      */
     "value": (string | Uint8Array) | null;
-  }
-
-  export interface Database {
-    "scratch": Scratch;
   }
 }
 

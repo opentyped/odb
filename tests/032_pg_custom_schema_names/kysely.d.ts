@@ -6,6 +6,15 @@ declare module "odb/kysely/billing" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Money = import('~/money').BillingMoney;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "cents": (string) | null;
+  }
+
   export interface WalletTable {
     /**
      * @required true
@@ -18,10 +27,6 @@ declare module "odb/kysely/billing" {
   export type NewWallet = Insertable<WalletTable>;
 
   export type WalletUpdate = Updateable<WalletTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-  }
 }
 
 declare module "odb/kysely/public" {
@@ -30,6 +35,15 @@ declare module "odb/kysely/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Money = import('~/money').Money;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+  }
 
   export interface WalletTable {
     /**
@@ -43,10 +57,6 @@ declare module "odb/kysely/public" {
   export type NewWallet = Insertable<WalletTable>;
 
   export type WalletUpdate = Updateable<WalletTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -18,10 +18,6 @@ declare module "odb/kysely/public" {
   export type NewAttributes = Insertable<AttributesTable>;
 
   export type AttributesUpdate = Updateable<AttributesTable>;
-
-  export interface Database {
-    "attributes": AttributesTable;
-  }
 }
 
 declare module "odb/kysely" {

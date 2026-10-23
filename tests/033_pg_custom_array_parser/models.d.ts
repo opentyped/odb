@@ -4,6 +4,8 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Flag = "on" | "off";
+
   /**
    * @schema
    */
@@ -12,10 +14,6 @@ declare module "odb/public" {
      * @required true
      */
     "flags": import('~/types').Flags;
-  }
-
-  export interface Database {
-    "flag_set": FlagSet;
   }
 }
 

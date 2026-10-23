@@ -29,10 +29,6 @@ declare module "odb/kysely/public" {
   export type NewDocumented = Insertable<DocumentedTable>;
 
   export type DocumentedUpdate = Updateable<DocumentedTable>;
-
-  export interface Database {
-    "documented": DocumentedTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -6,6 +6,19 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = import('~/money').Money;
+
+  export interface MonetaryValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     */
+    "currency": (string) | null;
+  }
+
   export interface AccountTable {
     /**
      * @required true
@@ -44,12 +57,6 @@ declare module "odb/kysely/public" {
   export type NewAccountView = Insertable<AccountViewTable>;
 
   export type AccountViewUpdate = Updateable<AccountViewTable>;
-
-  export interface Database {
-    "account": AccountTable;
-    "account_snapshot": AccountSnapshotTable;
-    "account_view": AccountViewTable;
-  }
 }
 
 declare module "odb/kysely" {

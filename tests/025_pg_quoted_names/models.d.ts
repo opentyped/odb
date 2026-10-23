@@ -21,10 +21,6 @@ declare module "odb/sales.zone" {
      */
     "quote\"column": (boolean) | null;
   }
-
-  export interface Database {
-    "order item": OrderItem;
-  }
 }
 
 declare module "odb" {

@@ -21,10 +21,6 @@ declare module "odb/main" {
      */
     "PRIMARY_KEY_NOT_A_CONSTRAINT": (string | Uint8Array) | null;
   }
-
-  export interface Database {
-    "ordinary": Ordinary;
-  }
 }
 
 declare module "odb" {

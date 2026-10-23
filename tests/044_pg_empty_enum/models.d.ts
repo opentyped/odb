@@ -4,14 +4,12 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type NoValues = never;
+
   /**
    * @schema
    */
   export interface Impossible {
-  }
-
-  export interface Database {
-    "impossible": Impossible;
   }
 }
 

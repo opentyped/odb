@@ -56,12 +56,6 @@ declare module "odb/kysely/public" {
   export type NewTenant = Insertable<TenantTable>;
 
   export type TenantUpdate = Updateable<TenantTable>;
-
-  export interface Database {
-    "entry": EntryTable;
-    "link": LinkTable;
-    "tenant": TenantTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -6,6 +6,8 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Flag = "on" | "off";
+
   export interface FlagSetTable {
     /**
      * @required true
@@ -18,10 +20,6 @@ declare module "odb/kysely/public" {
   export type NewFlagSet = Insertable<FlagSetTable>;
 
   export type FlagSetUpdate = Updateable<FlagSetTable>;
-
-  export interface Database {
-    "flag_set": FlagSetTable;
-  }
 }
 
 declare module "odb/kysely" {

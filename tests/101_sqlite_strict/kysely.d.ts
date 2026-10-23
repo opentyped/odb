@@ -34,10 +34,6 @@ declare module "odb/kysely/main" {
   export type NewStorage = Insertable<StorageTable>;
 
   export type StorageUpdate = Updateable<StorageTable>;
-
-  export interface Database {
-    "storage": StorageTable;
-  }
 }
 
 declare module "odb/kysely" {

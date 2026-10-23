@@ -18,10 +18,6 @@ declare module "odb/kysely/public" {
   export type NewTree = Insertable<TreeTable>;
 
   export type TreeUpdate = Updateable<TreeTable>;
-
-  export interface Database {
-    "tree": TreeTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -29,10 +29,6 @@ declare module "odb/kysely/public" {
   export type NewDocument = Insertable<DocumentTable>;
 
   export type DocumentUpdate = Updateable<DocumentTable>;
-
-  export interface Database {
-    "document": DocumentTable;
-  }
 }
 
 declare module "odb/kysely" {

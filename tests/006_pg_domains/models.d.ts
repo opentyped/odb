@@ -5,6 +5,18 @@ declare module "odb/public" {
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
   /**
+   * @maxLength 40
+   * @minLength 2
+   */
+  export type DisplayLabel = string;
+
+  /**
+   * @maxLength 40
+   * @minLength 2
+   */
+  export type Label = string;
+
+  /**
    * @schema
    */
   export interface Named {
@@ -20,10 +32,6 @@ declare module "odb/public" {
      * @minLength 2
      */
     "short": string;
-  }
-
-  export interface Database {
-    "named": Named;
   }
 }
 

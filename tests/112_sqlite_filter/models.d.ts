@@ -13,10 +13,6 @@ declare module "odb/billing" {
      */
     "id": number;
   }
-
-  export interface Database {
-    "invoice": Invoice;
-  }
 }
 
 declare module "odb" {

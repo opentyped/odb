@@ -27,10 +27,6 @@ declare module "odb/public" {
      */
     "large_serial": string;
   }
-
-  export interface Database {
-    "identity_record": IdentityRecord;
-  }
 }
 
 declare module "odb" {

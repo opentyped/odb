@@ -18,10 +18,6 @@ declare module "odb/main" {
      */
     "note": (string) | null;
   }
-
-  export interface Database {
-    "tricky": Tricky;
-  }
 }
 
 declare module "odb" {

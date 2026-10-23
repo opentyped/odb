@@ -6,6 +6,15 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Money = import('~/types').Money;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+  }
+
   export interface ShadowTable {
     /**
      * @required true
@@ -22,10 +31,6 @@ declare module "odb/kysely/public" {
   export type NewShadow = Insertable<ShadowTable>;
 
   export type ShadowUpdate = Updateable<ShadowTable>;
-
-  export interface Database {
-    "shadow": ShadowTable;
-  }
 }
 
 declare module "odb/kysely" {

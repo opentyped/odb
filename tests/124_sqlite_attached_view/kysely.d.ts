@@ -31,11 +31,6 @@ declare module "odb/kysely/analytics" {
   export type NewSource = Insertable<SourceTable>;
 
   export type SourceUpdate = Updateable<SourceTable>;
-
-  export interface Database {
-    "named": NamedTable;
-    "source": SourceTable;
-  }
 }
 
 declare module "odb/kysely/temp" {
@@ -57,10 +52,6 @@ declare module "odb/kysely/temp" {
   export type NewCrossSchema = Insertable<CrossSchemaTable>;
 
   export type CrossSchemaUpdate = Updateable<CrossSchemaTable>;
-
-  export interface Database {
-    "cross_schema": CrossSchemaTable;
-  }
 }
 
 declare module "odb/kysely" {

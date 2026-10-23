@@ -17,10 +17,6 @@ declare module "odb/main" {
      */
     "payload": import('./types.js').Payload;
   }
-
-  export interface Database {
-    "custom": Custom;
-  }
 }
 
 declare module "odb" {

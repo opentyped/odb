@@ -6,6 +6,10 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type RatingMultirange = string;
+
+  export type RatingRange = string;
+
   export interface RangeValueTable {
     /**
      * @required true
@@ -46,10 +50,6 @@ declare module "odb/kysely/public" {
   export type NewRangeValue = Insertable<RangeValueTable>;
 
   export type RangeValueUpdate = Updateable<RangeValueTable>;
-
-  export interface Database {
-    "range_value": RangeValueTable;
-  }
 }
 
 declare module "odb/kysely" {

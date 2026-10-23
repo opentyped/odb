@@ -24,10 +24,6 @@ declare module "odb/kysely/public" {
   export type NewLabel = Insertable<LabelTable>;
 
   export type LabelUpdate = Updateable<LabelTable>;
-
-  export interface Database {
-    "label": LabelTable;
-  }
 }
 
 declare module "odb/kysely" {

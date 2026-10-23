@@ -4,6 +4,10 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Balance = import('decimal.js').Decimal;
+
+  export type Monetary = import('decimal.js').Decimal;
+
   /**
    * @schema
    */
@@ -16,10 +20,6 @@ declare module "odb/public" {
      * @required true
      */
     "replaced": import('./types.js').Money;
-  }
-
-  export interface Database {
-    "wallet": Wallet;
   }
 }
 

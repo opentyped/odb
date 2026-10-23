@@ -17,10 +17,6 @@ declare module "odb/main" {
      */
     "name": (string | Uint8Array) | null;
   }
-
-  export interface Database {
-    "descending": Descending;
-  }
 }
 
 declare module "odb" {

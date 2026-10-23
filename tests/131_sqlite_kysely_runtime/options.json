@@ -1,0 +1,6 @@
+{
+  "dialect": "sqlite",
+  "identifiers": true,
+  "camelCase": true,
+  "fileSource": true
+}

@@ -22,10 +22,6 @@ declare module "odb/kysely/public" {
   export type NewEvent = Insertable<EventTable>;
 
   export type EventUpdate = Updateable<EventTable>;
-
-  export interface Database {
-    "event": EventTable;
-  }
 }
 
 declare module "odb/kysely/reporting" {
@@ -64,10 +60,6 @@ declare module "odb/kysely/reporting" {
   export type NewSummary = Insertable<SummaryTable>;
 
   export type SummaryUpdate = Updateable<SummaryTable>;
-
-  export interface Database {
-    "summary": SummaryTable;
-  }
 }
 
 declare module "odb/kysely" {

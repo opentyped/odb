@@ -34,10 +34,6 @@ declare module "odb/kysely/public" {
   export type NewOptional = Insertable<OptionalTable>;
 
   export type OptionalUpdate = Updateable<OptionalTable>;
-
-  export interface Database {
-    "optional": OptionalTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -33,11 +33,6 @@ declare module "odb/analytics" {
      */
     "document": (JsonValue) | null;
   }
-
-  export interface Database {
-    "copy": Copy;
-    "named": Named;
-  }
 }
 
 declare module "odb/public" {
@@ -58,10 +53,6 @@ declare module "odb/public" {
      * @jsonSchema {}
      */
     "b": JsonValue;
-  }
-
-  export interface Database {
-    "source": Source;
   }
 }
 

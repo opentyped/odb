@@ -31,11 +31,6 @@ declare module "odb/kysely/public" {
   export type NewProfile = Insertable<ProfileTable>;
 
   export type ProfileUpdate = Updateable<ProfileTable>;
-
-  export interface Database {
-    "account": AccountTable;
-    "profile": ProfileTable;
-  }
 }
 
 declare module "odb/kysely" {

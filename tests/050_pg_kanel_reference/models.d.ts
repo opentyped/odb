@@ -13,7 +13,7 @@ declare module "odb/billing" {
     /**
      * @required true
      */
-    "id": (string) | null;
+    "id": import("odb/public").AccountId | null;
     /**
      * @required true
      */
@@ -42,17 +42,16 @@ declare module "odb/billing" {
      */
     "payload": (JsonValue) | null;
   }
-
-  export interface Database {
-    "account_view": AccountView;
-    "invoice": Invoice;
-  }
 }
 
 declare module "odb/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Price = string;
+
+  export type Role = "member" | "admin";
 
   export type AccountId = (string) & { readonly __brand: "public.account.id" };
 
@@ -89,10 +88,6 @@ declare module "odb/public" {
      * @required true
      */
     "clock": (string) | null;
-  }
-
-  export interface Database {
-    "account": Account;
   }
 }
 

@@ -22,10 +22,6 @@ declare module "odb/public" {
      */
     "value": (string) | null;
   }
-
-  export interface Database {
-    "documented": Documented;
-  }
 }
 
 declare module "odb" {

@@ -30,10 +30,6 @@ declare module "odb/kysely/main" {
   export type NewDefaults = Insertable<DefaultsTable>;
 
   export type DefaultsUpdate = Updateable<DefaultsTable>;
-
-  export interface Database {
-    "defaults": DefaultsTable;
-  }
 }
 
 declare module "odb/kysely" {

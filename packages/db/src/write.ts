@@ -59,3 +59,25 @@ export async function writeFiles(
     await Promise.all(staged.map(({ file }) => rm(file, { force: true })));
   }
 }
+
+/** Check committed artifacts without creating directories or changing files. */
+export async function verifyFiles(generation: Generation, root = process.cwd()): Promise<void> {
+  const stale: string[] = [];
+
+  for (const [file, expected] of Object.entries(generation.files)) {
+    try {
+      if ((await readFile(resolve(root, file), 'utf8')) !== expected) {
+        stale.push(file);
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw error;
+      }
+      stale.push(file);
+    }
+  }
+
+  if (stale.length) {
+    throw new Error(`Generated files are stale: ${stale.sort().join(', ')}`);
+  }
+}

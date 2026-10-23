@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "include": ["public.keep?"],
+  "exclude": ["public.keep2"]
+}

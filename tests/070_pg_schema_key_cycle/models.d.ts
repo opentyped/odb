@@ -15,10 +15,6 @@ declare module "odb/a" {
      */
     "id": ItemId;
   }
-
-  export interface Database {
-    "item": Item;
-  }
 }
 
 declare module "odb/b" {
@@ -34,10 +30,6 @@ declare module "odb/b" {
      * @required true
      */
     "id": import("odb/a").ItemId;
-  }
-
-  export interface Database {
-    "item": Item;
   }
 }
 

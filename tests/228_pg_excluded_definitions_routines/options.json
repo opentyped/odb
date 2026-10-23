@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "extensions": ["citext"],
+  "exclude": ["public.hidden*"]
+}

@@ -44,11 +44,6 @@ declare module "odb/kysely/main" {
   export type NewParent = Insertable<ParentTable>;
 
   export type ParentUpdate = Updateable<ParentTable>;
-
-  export interface Database {
-    "Child": ChildTable;
-    "Parent": ParentTable;
-  }
 }
 
 declare module "odb/kysely" {

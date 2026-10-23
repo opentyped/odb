@@ -13,10 +13,6 @@ declare module "odb/public" {
      */
     "data": (unknown) | null;
   }
-
-  export interface Database {
-    "attributes": Attributes;
-  }
 }
 
 declare module "odb" {

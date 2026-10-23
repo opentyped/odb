@@ -24,10 +24,6 @@ declare module "odb/kysely/main" {
   export type NewAccount = Insertable<AccountTable>;
 
   export type AccountUpdate = Updateable<AccountTable>;
-
-  export interface Database {
-    "account": AccountTable;
-  }
 }
 
 declare module "odb/kysely" {

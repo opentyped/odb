@@ -31,15 +31,11 @@ declare module "odb/public" {
     /**
      * @required true
      */
-    "elapsed": ({ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number }) | null;
+    "elapsed": ({ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number; milliseconds?: number }) | null;
     /**
      * @required true
      */
     "bytes": (import('node:buffer').Buffer) | null;
-  }
-
-  export interface Database {
-    "temporal": Temporal;
   }
 }
 

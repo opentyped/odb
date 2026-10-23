@@ -41,11 +41,6 @@ declare module "odb/kysely/public" {
   export type NewEntry = Insertable<EntryTable>;
 
   export type EntryUpdate = Updateable<EntryTable>;
-
-  export interface Database {
-    "account": AccountTable;
-    "entry": EntryTable;
-  }
 }
 
 declare module "odb/kysely" {

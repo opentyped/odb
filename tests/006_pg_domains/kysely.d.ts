@@ -6,6 +6,18 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  /**
+   * @maxLength 40
+   * @minLength 2
+   */
+  export type DisplayLabel = string;
+
+  /**
+   * @maxLength 40
+   * @minLength 2
+   */
+  export type Label = string;
+
   export interface NamedTable {
     /**
      * @required true
@@ -26,10 +38,6 @@ declare module "odb/kysely/public" {
   export type NewNamed = Insertable<NamedTable>;
 
   export type NamedUpdate = Updateable<NamedTable>;
-
-  export interface Database {
-    "named": NamedTable;
-  }
 }
 
 declare module "odb/kysely" {

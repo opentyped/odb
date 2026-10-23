@@ -24,10 +24,6 @@ declare module "odb/public" {
      */
     "jsonb_default": JsonValue;
   }
-
-  export interface Database {
-    "document": Document;
-  }
 }
 
 declare module "odb" {

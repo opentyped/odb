@@ -25,11 +25,6 @@ declare module "odb/billing" {
      */
     "id": UserId;
   }
-
-  export interface Database {
-    "profile": Profile;
-    "user": User;
-  }
 }
 
 declare module "odb/main" {
@@ -57,11 +52,6 @@ declare module "odb/main" {
      * @required true
      */
     "id": UserId;
-  }
-
-  export interface Database {
-    "profile": Profile;
-    "user": User;
   }
 }
 

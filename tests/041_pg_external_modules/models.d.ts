@@ -13,10 +13,6 @@ declare module "custom/odb/public" {
      */
     "value": string;
   }
-
-  export interface Database {
-    "plain": Plain;
-  }
 }
 
 declare module "custom/odb" {

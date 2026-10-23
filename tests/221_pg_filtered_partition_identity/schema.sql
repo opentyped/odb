@@ -1,0 +1,8 @@
+CREATE TABLE account (id integer PRIMARY KEY)
+PARTITION BY
+  RANGE (id);
+
+CREATE TABLE account_part PARTITION OF account FOR
+VALUES
+FROM
+  (0) TO (100);

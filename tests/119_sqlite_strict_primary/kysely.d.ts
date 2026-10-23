@@ -22,10 +22,6 @@ declare module "odb/kysely/main" {
   export type NewStrictKey = Insertable<StrictKeyTable>;
 
   export type StrictKeyUpdate = Updateable<StrictKeyTable>;
-
-  export interface Database {
-    "strict_key": StrictKeyTable;
-  }
 }
 
 declare module "odb/kysely" {

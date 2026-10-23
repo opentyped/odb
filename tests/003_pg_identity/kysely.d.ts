@@ -32,10 +32,6 @@ declare module "odb/kysely/public" {
   export type NewIdentityRecord = Insertable<IdentityRecordTable>;
 
   export type IdentityRecordUpdate = Updateable<IdentityRecordTable>;
-
-  export interface Database {
-    "identity_record": IdentityRecordTable;
-  }
 }
 
 declare module "odb/kysely" {

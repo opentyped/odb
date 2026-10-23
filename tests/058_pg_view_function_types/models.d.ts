@@ -4,6 +4,20 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type State = "yes" | "no";
+
+  export interface ReadStateParameters {
+    [key: string]: never;
+  }
+
+  export interface ReadStateResult {
+    "status": ("yes" | "no") | null;
+    "count": (string) | null;
+    "document": JsonValue;
+  }
+
+  export type ReadStateRows = ReadStateResult[];
+
   /**
    * @schema
    */
@@ -40,11 +54,6 @@ declare module "odb/public" {
      * @jsonSchema {}
      */
     "document": (JsonValue) | null;
-  }
-
-  export interface Database {
-    "functional": Functional;
-    "functional_snapshot": FunctionalSnapshot;
   }
 }
 

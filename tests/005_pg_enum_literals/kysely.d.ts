@@ -6,6 +6,8 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Mood = "ok" | "quote'd" | "with space" | "☃" | "line\nbreak" | "";
+
   export interface FeelingTable {
     /**
      * @required true
@@ -22,10 +24,6 @@ declare module "odb/kysely/public" {
   export type NewFeeling = Insertable<FeelingTable>;
 
   export type FeelingUpdate = Updateable<FeelingTable>;
-
-  export interface Database {
-    "feeling": FeelingTable;
-  }
 }
 
 declare module "odb/kysely" {

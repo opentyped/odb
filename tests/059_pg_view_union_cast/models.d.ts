@@ -18,10 +18,6 @@ declare module "odb/public" {
      */
     "values": (PgArray<number>) | null;
   }
-
-  export interface Database {
-    "union_value": UnionValue;
-  }
 }
 
 declare module "odb" {

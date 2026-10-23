@@ -15,11 +15,6 @@ declare module "odb/public" {
    */
   export interface Empty {
   }
-
-  export interface Database {
-    "emptied": Emptied;
-    "empty": Empty;
-  }
 }
 
 declare module "odb" {

@@ -18,10 +18,6 @@ declare module "odb/kysely/sales%2Feast" {
   export type NewUserRecord = Insertable<UserRecordTable>;
 
   export type UserRecordUpdate = Updateable<UserRecordTable>;
-
-  export interface Database {
-    "user record": UserRecordTable;
-  }
 }
 
 declare module "odb/kysely/temp" {
@@ -43,10 +39,6 @@ declare module "odb/kysely/temp" {
   export type NewUserRecord = Insertable<UserRecordTable>;
 
   export type UserRecordUpdate = Updateable<UserRecordTable>;
-
-  export interface Database {
-    "user record": UserRecordTable;
-  }
 }
 
 declare module "odb/kysely" {

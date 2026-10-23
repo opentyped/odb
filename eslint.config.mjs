@@ -14,6 +14,7 @@ export default tseslint.config(
       'tests/**/models.d.ts',
       'tests/**/kysely.d.ts',
       'tests/**/kanel/**',
+      'tests/**/codegen.d.ts',
     ],
   },
   js.configs.recommended,

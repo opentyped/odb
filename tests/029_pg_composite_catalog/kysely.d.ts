@@ -6,6 +6,33 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Asset = string;
+
+  export interface AssetValue {
+    /**
+     * @required true
+     */
+    "label": (string) | null;
+    /**
+     * @required true
+     */
+    "money": (string) | null;
+  }
+
+  export type MoneyValue = string;
+
+  export interface MoneyValueValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     * @maxLength 3
+     */
+    "currency": (string) | null;
+  }
+
   export interface HolderTable {
     /**
      * @required true
@@ -39,11 +66,6 @@ declare module "odb/kysely/public" {
   export type NewSeed = Insertable<SeedTable>;
 
   export type SeedUpdate = Updateable<SeedTable>;
-
-  export interface Database {
-    "holder": HolderTable;
-    "seed": SeedTable;
-  }
 }
 
 declare module "odb/kysely" {

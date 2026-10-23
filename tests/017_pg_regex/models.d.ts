@@ -30,10 +30,6 @@ declare module "odb/public" {
      */
     "insensitive": (string) | null;
   }
-
-  export interface Database {
-    "code": Code;
-  }
 }
 
 declare module "odb" {

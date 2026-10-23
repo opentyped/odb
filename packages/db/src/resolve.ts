@@ -1,3 +1,4 @@
+import { camelCase, isIdentifier, matches, pascal } from '~/naming';
 import { reservedNames } from '~/reserved';
 import { mergeAnnotations } from '~/annotation';
 import { identifiers } from '~/identifier';
@@ -9,24 +10,69 @@ import type {
   Relation,
   ResolveOptions,
   ResolvedDatabase,
+  ResolvedDefinition,
+  ResolvedRoutine,
   ResolvedColumn,
   TypeMapping,
 } from '~/schema';
 
-const pascal = (name: string): string =>
-  name.replace(/(^|[^a-zA-Z0-9]+)([a-zA-Z0-9])/g, (_, _prefix, letter: string) =>
-    letter.toUpperCase(),
-  );
 const mapping = (value: string | TypeMapping): TypeMapping =>
   typeof value === 'string' ? { select: value } : value;
 
+function validateMappings(
+  names: readonly string[],
+  mappings: Readonly<Record<string, unknown>> | undefined,
+  kind: string,
+): void {
+  const seen = new Set<string>();
+
+  for (const name of names) {
+    if (seen.has(name) && mappings?.[name] !== undefined) {
+      throw new Error(
+        `Ambiguous ${kind} mapping ${JSON.stringify(name)}; SQL identifier segments contain dots`,
+      );
+    }
+    seen.add(name);
+  }
+}
+
+const missingMappings = (names: readonly string[]): string =>
+  names
+    .map(
+      (name) =>
+        `No mapping for ${name}; configure types[${JSON.stringify(name)}] for your driver parser`,
+    )
+    .join('\n');
+
 export class TypeResolver {
   private readonly types: Map<string, DatabaseType>;
+  private readonly relations = new Map<string, Relation>();
+  /** Set while resolve() runs, so one pass reports every missing mapping. */
+  private missing: Set<string> | undefined;
+  private readonly columns = new Map<string, Map<string, Column>>();
 
   constructor(
     private readonly database: Database,
     private readonly options: ResolveOptions = {},
   ) {
+    validateMappings(
+      database.types.map((type) => `${type.schema}.${type.name}`),
+      options.types,
+      'type',
+    );
+    validateMappings(
+      database.relations.flatMap((relation) =>
+        relation.columns.map((column) => `${relation.schema}.${relation.name}.${column.name}`),
+      ),
+      options.columns,
+      'column',
+    );
+
+    for (const relation of database.relations) {
+      const key = JSON.stringify([relation.schema, relation.name]);
+      this.relations.set(key, relation);
+      this.columns.set(key, new Map(relation.columns.map((column) => [column.name, column])));
+    }
     this.types = new Map(database.types.map((type) => [type.id, type]));
 
     if (this.types.size !== database.types.length) {
@@ -94,9 +140,14 @@ export class TypeResolver {
     if (this.options.unknownType !== undefined) {
       return { select: this.options.unknownType };
     }
-    throw new Error(
-      `No mapping for ${type.schema}.${type.name}; configure types[${JSON.stringify(`${type.schema}.${type.name}`)}] for your driver parser`,
-    );
+    const name = `${type.schema}.${type.name}`;
+
+    if (this.missing) {
+      this.missing.add(name);
+
+      return { select: 'unknown' };
+    }
+    throw new Error(missingMappings([name]));
   }
 
   private domain(id: string): { nullable: boolean; default: boolean; annotations: Annotations } {
@@ -123,9 +174,37 @@ export class TypeResolver {
     };
   }
 
-  column(column: Column, relation: Relation): ResolvedColumn {
+  column(column: Column, relation: Relation, visited = new Set<Column>()): ResolvedColumn {
     const override = this.options.columns?.[`${relation.schema}.${relation.name}.${column.name}`];
-    const value = override === undefined ? this.type(column.type) : mapping(override);
+    let value: TypeMapping | undefined = override === undefined ? undefined : mapping(override);
+
+    if (column.source && override === undefined && !visited.has(column)) {
+      const source = column.source;
+      const key = JSON.stringify([source.schema, source.relation]);
+      const owner = this.relations.get(key);
+      const original = this.columns.get(key)?.get(source.column);
+      const base = (id: string): string => {
+        const seen = new Set<string>();
+        while (this.types.get(id)?.kind === 'domain' && !seen.has(id)) {
+          seen.add(id);
+          id = (this.types.get(id) as Extract<DatabaseType, { kind: 'domain' }>).base;
+        }
+
+        return id;
+      };
+
+      if (owner && original && base(original.type) === base(column.type)) {
+        const resolved = this.column(original, owner, new Set(visited).add(column));
+        value = {
+          select:
+            resolved.nullable && resolved.value.select !== 'never'
+              ? resolved.value.select.slice(1, -8)
+              : resolved.value.select,
+          annotations: resolved.annotations,
+        };
+      }
+    }
+    value ??= this.type(column.type);
     const domain = this.domain(column.type);
     const nullable =
       column.nullable &&
@@ -147,6 +226,7 @@ export class TypeResolver {
 
     return {
       ...column,
+      ...(this.options.camelCase ? { propertyName: camelCase(column.name) } : {}),
       nullable,
       annotations: mergeAnnotations(domain.annotations, value.annotations, column.annotations),
       insertOptional,
@@ -159,6 +239,22 @@ export class TypeResolver {
   }
 
   resolve(): ResolvedDatabase {
+    this.missing = new Set();
+
+    try {
+      const database = this.resolveAll();
+
+      if (this.missing.size) {
+        throw new Error(missingMappings([...this.missing].sort()));
+      }
+
+      return database;
+    } finally {
+      this.missing = undefined;
+    }
+  }
+
+  private resolveAll(): ResolvedDatabase {
     const reserved = new Set([
       'Database',
       'JsonValue',
@@ -172,6 +268,31 @@ export class TypeResolver {
       'Uint8Array',
       'Exclude',
     ]);
+    const visible = (relation: { schema: string; name: string; exported?: boolean }): boolean => {
+      const name = `${relation.schema}.${relation.name}`;
+
+      return (
+        relation.exported !== false &&
+        (this.options.include === undefined || matches(name, this.options.include)) &&
+        !matches(name, this.options.exclude ?? [])
+      );
+    };
+    const required = new Set<Column>(
+      this.database.relations.filter(visible).flatMap((relation) => relation.columns),
+    );
+    const pending = [...required];
+
+    for (const column of pending) {
+      for (const reference of [...column.references, ...(column.source ? [column.source] : [])]) {
+        const key = JSON.stringify([reference.schema, reference.relation]);
+        const target = this.columns.get(key)?.get(reference.column);
+
+        if (target && !required.has(target)) {
+          required.add(target);
+          pending.push(target);
+        }
+      }
+    }
     const names = new Set<string>();
     const keys = new Set<string>();
     const relations = [...this.database.relations]
@@ -186,35 +307,231 @@ export class TypeResolver {
         const isDefault = relation.schema === (this.database.dialect === 'pg' ? 'public' : 'main');
         const typeName = this.options.name?.(relation) ?? pascal(relation.name);
 
-        if (!/^[A-Za-z_$][\w$]*$/.test(typeName) || reservedNames.has(typeName)) {
+        if (visible(relation) && (!isIdentifier(typeName) || reservedNames.has(typeName))) {
           throw new Error(`Invalid generated type name ${JSON.stringify(typeName)}`);
         }
 
         // Reserve table names here too, so both generators have the same collision contract.
         for (const name of [typeName, `${typeName}Table`, `New${typeName}`, `${typeName}Update`]) {
-          if (reserved.has(name) || names.has(`${relation.schema}:${name}`)) {
+          if (
+            visible(relation) &&
+            (reserved.has(name) || names.has(`${relation.schema}:${name}`))
+          ) {
             throw new Error(`Generated name collision: ${name}; configure name(relation)`);
           }
-          names.add(`${relation.schema}:${name}`);
-        }
-        const key = isDefault ? relation.name : `${relation.schema}.${relation.name}`;
 
-        if (keys.has(key)) {
+          if (visible(relation)) {
+            names.add(`${relation.schema}:${name}`);
+          }
+        }
+        const tableKey = isDefault ? relation.name : `${relation.schema}.${relation.name}`;
+        const key = this.options.camelCase
+          ? isDefault
+            ? camelCase(relation.name)
+            : `${camelCase(relation.schema)}.${camelCase(relation.name)}`
+          : tableKey;
+
+        if (visible(relation) && keys.has(key)) {
           throw new Error(`Database key collision: ${key}`);
         }
-        keys.add(key);
-        const columns = relation.columns.map((column) => this.column(column, relation));
 
-        if (new Set(columns.map((column) => column.name)).size !== columns.length) {
+        if (visible(relation)) {
+          keys.add(key);
+        }
+        const columns = relation.columns.map((column) =>
+          required.has(column)
+            ? this.column(column, relation)
+            : {
+                ...column,
+                value: { select: 'unknown', insert: 'never', update: 'never' },
+                insertOptional: false,
+              },
+        );
+
+        if (
+          visible(relation) &&
+          new Set(columns.map((column) => column.propertyName ?? column.name)).size !==
+            columns.length
+        ) {
           throw new Error(`Duplicate columns in ${key}`);
         }
 
         return { ...relation, typeName, key, columns };
       });
 
-    return this.options.identifiers !== false
-      ? { ...this.database, ...identifiers(relations, this.options, names) }
-      : { ...this.database, relations, identifiers: [] };
+    const populated =
+      this.options.identifiers !== false
+        ? identifiers(relations, this.options, names, visible)
+        : { relations, identifiers: [] };
+    const selected = populated.relations.filter(visible);
+    const used = selected.flatMap((relation) =>
+      relation.columns.flatMap((column) => column.identifiers ?? []),
+    );
+    const exportedIdentifiers = populated.identifiers.filter((identifier) =>
+      used.some(
+        (identity) =>
+          typeof identity !== 'string' &&
+          identity.schema === identifier.schema &&
+          identity.name === identifier.name,
+      ),
+    );
+
+    const definitions: ResolvedDefinition[] = this.database.types
+      .filter((type) => type.exported && visible(type))
+      .map((type) => {
+        const name = this.options.typeName?.(type) ?? pascal(type.name);
+
+        if (
+          !isIdentifier(name) ||
+          reservedNames.has(name) ||
+          reserved.has(name) ||
+          names.has(`${type.schema}:${name}`)
+        ) {
+          throw new Error(
+            `Generated SQL type name collision: ${type.schema}.${name}; configure typeName(type)`,
+          );
+        }
+        names.add(`${type.schema}:${name}`);
+        const value = this.type(type.id);
+        const definition: ResolvedDefinition = {
+          schema: type.schema,
+          name,
+          kind: type.kind,
+          comment: type.comment,
+          annotations: mergeAnnotations(type.annotations, value.annotations),
+          value,
+        };
+
+        if (type.kind === 'composite') {
+          const companion = `${name}Value`;
+
+          if (names.has(`${type.schema}:${companion}`)) {
+            throw new Error(
+              `Generated SQL type name collision: ${type.schema}.${companion}; configure typeName(type)`,
+            );
+          }
+          names.add(`${type.schema}:${companion}`);
+          definition.fields = type.columns.map((column) =>
+            this.column(column, {
+              schema: type.schema,
+              name: type.name,
+              kind: 'table',
+              columns: type.columns,
+              checks: [],
+              comment: type.comment,
+            }),
+          );
+
+          if (
+            new Set(definition.fields.map((field) => field.propertyName ?? field.name)).size !==
+            definition.fields.length
+          ) {
+            throw new Error(`Duplicate fields in SQL type ${type.schema}.${name}Value`);
+          }
+        }
+
+        return definition;
+      });
+
+    const inputRoutines = (this.database.routines ?? []).filter(visible);
+    const routines: ResolvedRoutine[] = inputRoutines.map((routine) => {
+      const overloads = inputRoutines.filter(
+        (entry) => entry.schema === routine.schema && entry.name === routine.name,
+      );
+      const overload = overloads.indexOf(routine) + 1;
+      const name =
+        this.options.routineName?.(routine, overload) ??
+        `${pascal(routine.name)}${overloads.length > 1 ? overload : ''}`;
+
+      for (const suffix of [
+        'Parameters',
+        'Result',
+        ...(routine.setReturning ? ['Rows'] : []),
+        ...(routine.kind === 'function' &&
+        routine.parameters.filter((parameter) => ['o', 'b'].includes(parameter.mode)).length ===
+          1 &&
+        !routine.parameters.some((parameter) => parameter.mode === 't')
+          ? ['Row']
+          : []),
+      ]) {
+        const exported = `${name}${suffix}`;
+
+        if (
+          !isIdentifier(exported) ||
+          reservedNames.has(exported) ||
+          reserved.has(exported) ||
+          names.has(`${routine.schema}:${exported}`)
+        ) {
+          throw new Error(
+            `Generated routine name collision: ${routine.schema}.${exported}; configure routineName(routine, overload)`,
+          );
+        }
+        names.add(`${routine.schema}:${exported}`);
+      }
+      const value = (type: string, input: boolean): string => {
+        const mapped = this.type(type);
+        const selected = input ? (mapped.insert ?? mapped.select) : mapped.select;
+
+        return this.domain(type).nullable && selected !== 'unknown' && selected !== 'JsonValue'
+          ? `(${selected}) | null`
+          : selected;
+      };
+      const outputs = routine.parameters.filter((parameter) =>
+        ['o', 'b', 't'].includes(parameter.mode),
+      );
+      const returned = this.types.get(routine.returnType);
+      // Like RETURNS TABLE, a composite result expands to its attributes in FROM.
+      const composite =
+        !outputs.length && returned?.kind === 'composite'
+          ? returned.columns.map((column) => ({ name: column.name, type: column.type }))
+          : [];
+      const fields = [...outputs, ...composite].map((parameter) => ({
+        name: this.options.camelCase ? camelCase(parameter.name) : parameter.name,
+        value: value(parameter.type, false),
+      }));
+
+      const parameters = routine.parameters
+        .filter((parameter) => !['o', 't'].includes(parameter.mode))
+        .map((parameter) => ({
+          name: this.options.camelCase ? camelCase(parameter.name) : parameter.name,
+          value: value(parameter.type, true),
+          optional: parameter.optional,
+        }));
+
+      if (new Set(parameters.map((parameter) => parameter.name)).size !== parameters.length) {
+        throw new Error(`Duplicate parameters in routine ${routine.schema}.${routine.name}`);
+      }
+
+      if (new Set(fields.map((field) => field.name)).size !== fields.length) {
+        throw new Error(`Duplicate output fields in routine ${routine.schema}.${routine.name}`);
+      }
+      const singleOut =
+        routine.kind === 'function' &&
+        outputs.length === 1 &&
+        !routine.parameters.some((parameter) => parameter.mode === 't');
+
+      return {
+        schema: routine.schema,
+        name,
+        signature: routine.signature,
+        comment: routine.comment,
+        setReturning: routine.setReturning,
+        parameters,
+        result:
+          routine.kind === 'procedure' && !fields.length
+            ? 'void'
+            : value(routine.returnType, false),
+        ...(fields.length ? (singleOut ? { rowFields: fields } : { fields }) : {}),
+      };
+    });
+
+    return {
+      ...this.database,
+      routines,
+      definitions,
+      relations: selected,
+      identifiers: exportedIdentifiers,
+    };
   }
 }
 

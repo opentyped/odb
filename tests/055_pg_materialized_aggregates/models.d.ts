@@ -17,10 +17,6 @@ declare module "odb/public" {
      */
     "amount": string;
   }
-
-  export interface Database {
-    "event": Event;
-  }
 }
 
 declare module "odb/reporting" {
@@ -53,10 +49,6 @@ declare module "odb/reporting" {
      * @required true
      */
     "categories": (PgArray<string>) | null;
-  }
-
-  export interface Database {
-    "summary": Summary;
   }
 }
 

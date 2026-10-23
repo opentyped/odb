@@ -4,6 +4,10 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Amount = import('~/types').Decimal;
+
+  export type AmountAlias = import('~/types').Decimal;
+
   /**
    * @schema
    */
@@ -12,10 +16,6 @@ declare module "odb/public" {
      * @required true
      */
     "value": import('~/types').Decimal;
-  }
-
-  export interface Database {
-    "total": Total;
   }
 }
 

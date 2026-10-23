@@ -19,10 +19,6 @@ declare module "odb/public" {
      */
     "name": string;
   }
-
-  export interface Database {
-    "label": Label;
-  }
 }
 
 declare module "odb" {

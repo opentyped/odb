@@ -6,6 +6,19 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = import('./types/monetary.js').Monetary;
+
+  export interface MonetaryValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     */
+    "currency": (string) | null;
+  }
+
   export interface InvoiceTable {
     /**
      * @required true
@@ -35,11 +48,6 @@ declare module "odb/kysely/public" {
   export type NewInvoiceView = Insertable<InvoiceViewTable>;
 
   export type InvoiceViewUpdate = Updateable<InvoiceViewTable>;
-
-  export interface Database {
-    "invoice": InvoiceTable;
-    "invoice_view": InvoiceViewTable;
-  }
 }
 
 declare module "odb/kysely" {

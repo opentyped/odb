@@ -1,0 +1,7 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "columns": {
+    "public.dead.value": "never"
+  }
+}

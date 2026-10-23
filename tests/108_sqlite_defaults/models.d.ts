@@ -25,10 +25,6 @@ declare module "odb/main" {
      */
     "nothing": (string) | null;
   }
-
-  export interface Database {
-    "defaults": Defaults;
-  }
 }
 
 declare module "odb" {

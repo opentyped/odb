@@ -45,12 +45,6 @@ declare module "odb/main" {
      */
     "label": (string | number | Uint8Array) | null;
   }
-
-  export interface Database {
-    "account": Account;
-    "account_view": AccountView;
-    "expression_view": ExpressionView;
-  }
 }
 
 declare module "odb" {

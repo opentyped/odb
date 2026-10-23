@@ -15,7 +15,17 @@ export const catalog = {
       t.typnotnull AS "notNull",
       t.typdefault AS "default",
       t.typtypmod AS modifier,
-      obj_description(t.oid, 'pg_type') AS comment,
+      EXISTS (
+        SELECT
+          1
+        FROM
+          pg_catalog.pg_depend d
+        WHERE
+          d.classid = 'pg_catalog.pg_type'::regclass
+          AND d.objid = t.oid
+          AND d.deptype = 'e'
+      ) AS extension,
+      pg_catalog.obj_description (t.oid, 'pg_type') AS comment,
       ARRAY(
         SELECT
           e.enumlabel
@@ -56,7 +66,19 @@ export const catalog = {
       n.nspname AS schema,
       c.relname AS name,
       c.relkind AS kind,
-      obj_description(c.oid, 'pg_class') AS comment
+      c.relispartition AS partition,
+      ARRAY(
+        SELECT
+          a.attname
+        FROM
+          pg_catalog.pg_partitioned_table pt
+          CROSS JOIN pg_catalog.unnest (pt.partattrs::INT2[]) AS k (num)
+          JOIN pg_catalog.pg_attribute a ON a.attrelid = pt.partrelid
+          AND a.attnum = k.num
+        WHERE
+          pt.partrelid = c.oid
+      ) AS "partitionKey",
+      pg_catalog.obj_description (c.oid, 'pg_class') AS comment
     FROM
       pg_catalog.pg_class c
       JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
@@ -79,7 +101,7 @@ export const catalog = {
       pg_catalog.pg_get_expr (d.adbin, d.adrelid) AS "default",
       a.attidentity AS identity,
       a.attgenerated <> '' AS generated,
-      col_description(a.attrelid, a.attnum) AS comment
+      pg_catalog.col_description (a.attrelid, a.attnum) AS comment
     FROM
       pg_catalog.pg_attribute a
       JOIN pg_catalog.pg_class c ON c.oid = a.attrelid
@@ -96,6 +118,93 @@ export const catalog = {
       a.attrelid,
       a.attnum
   `,
+  routines: sql`
+    SELECT
+      p.oid::text AS id,
+      n.nspname AS schema,
+      p.proname AS name,
+      p.prokind AS kind,
+      p.prorettype::text AS "returnType",
+      p.proretset AS "setReturning",
+      p.pronargdefaults AS defaults,
+      ARRAY(
+        SELECT
+          arg::text
+        FROM
+          pg_catalog.unnest (COALESCE(p.proallargtypes, p.proargtypes::oid[])) arg
+      ) AS types,
+      p.proargnames AS names,
+      p.proargmodes::TEXT[] AS modes,
+      pg_catalog.pg_get_function_identity_arguments (p.oid) AS signature,
+      pg_catalog.obj_description (p.oid, 'pg_proc') AS comment
+    FROM
+      pg_catalog.pg_proc p
+      JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+    WHERE
+      p.prokind IN ('f', 'p')
+      AND NOT EXISTS (
+        SELECT
+          1
+        FROM
+          pg_catalog.pg_type rt
+        WHERE
+          rt.oid = p.prorettype
+          AND rt.typtype = 'p'
+          AND rt.typname IN (
+            'trigger',
+            'event_trigger',
+            'language_handler',
+            'fdw_handler',
+            'index_am_handler',
+            'table_am_handler',
+            'tsm_handler',
+            'internal',
+            'cstring'
+          )
+      )
+      AND n.nspname <> 'information_schema'
+      AND n.nspname !~ '^pg_'
+      AND NOT EXISTS (
+        SELECT
+          1
+        FROM
+          pg_catalog.pg_depend d
+        WHERE
+          d.classid = 'pg_catalog.pg_proc'::regclass
+          AND d.objid = p.oid
+          AND d.deptype IN ('e', 'i')
+      )
+    ORDER BY
+      n.nspname,
+      p.proname,
+      pg_catalog.pg_get_function_identity_arguments (p.oid)
+  `,
+  partitions: sql`
+    SELECT
+      i.inhrelid::text AS child,
+      i.inhparent::text AS parent
+    FROM
+      pg_catalog.pg_inherits i
+      JOIN pg_catalog.pg_class c ON c.oid = i.inhrelid
+    WHERE
+      c.relispartition
+    ORDER BY
+      i.inhrelid
+  `,
+  views: sql`
+    SELECT
+      r.ev_class::text AS relation,
+      r.ev_action::text AS action
+    FROM
+      pg_catalog.pg_rewrite r
+      JOIN pg_catalog.pg_class c ON c.oid = r.ev_class
+      JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+    WHERE
+      r.rulename = '_RETURN'
+      AND c.relkind IN ('v', 'm')
+      AND n.nspname <> 'information_schema'
+      AND n.nspname !~ '^pg_'
+  `,
   constraints: sql`
     SELECT
       con.conrelid::text AS relation,
@@ -106,20 +215,33 @@ export const catalog = {
         SELECT
           a.attname
         FROM
-          unnest(con.conkey) WITH ORDINALITY AS k (num, ord)
+          pg_catalog.unnest (con.conkey) WITH ORDINALITY AS k (num, ord)
           JOIN pg_catalog.pg_attribute a ON a.attrelid = con.conrelid
           AND a.attnum = k.num
         ORDER BY
           k.ord
       ) AS columns,
       pg_catalog.pg_get_expr (con.conbin, con.conrelid) AS expression,
+      NOT EXISTS (
+        SELECT
+          1
+        FROM
+          pg_catalog.pg_depend d
+        WHERE
+          d.classid = 'pg_catalog.pg_constraint'::regclass
+          AND d.objid = con.oid
+          AND d.refclassid IN (
+            'pg_catalog.pg_proc'::regclass,
+            'pg_catalog.pg_operator'::regclass
+          )
+      ) AS builtin,
       tn.nspname AS "targetSchema",
       tc.relname AS "targetRelation",
       ARRAY(
         SELECT
           a.attname
         FROM
-          unnest(con.confkey) WITH ORDINALITY AS k (num, ord)
+          pg_catalog.unnest (con.confkey) WITH ORDINALITY AS k (num, ord)
           JOIN pg_catalog.pg_attribute a ON a.attrelid = con.confrelid
           AND a.attnum = k.num
         ORDER BY
@@ -148,11 +270,14 @@ export interface TypeRow {
   notNull: boolean;
   default: string | null;
   modifier: number;
+  extension?: boolean;
   comment: string | null;
   values: string[];
   subtype: string;
 }
 export interface RelationRow {
+  partition: boolean;
+  partitionKey: string[];
   id: string;
   schema: string;
   name: string;
@@ -172,6 +297,7 @@ export interface ColumnRow {
   comment: string | null;
 }
 export interface ConstraintRow {
+  builtin?: boolean;
   relation: string;
   type: string;
   name: string;
@@ -188,5 +314,23 @@ export const snapshot = `WITH ${Object.entries(catalog)
   .map(([name, sql]) => `odb_${name} AS (${sql})`)
   .join(',\n')}
 SELECT ${Object.keys(catalog)
-  .map((name) => `(SELECT COALESCE(json_agg(row), '[]'::json) FROM odb_${name} row) AS "${name}"`)
+  .map(
+    (name) =>
+      `(SELECT COALESCE(pg_catalog.json_agg(row), '[]'::json) FROM odb_${name} row) AS "${name}"`,
+  )
   .join(',\n')}`;
+
+export interface RoutineRow {
+  id: string;
+  schema: string;
+  name: string;
+  kind: 'f' | 'p';
+  returnType: string;
+  setReturning: boolean;
+  defaults: number;
+  types: string[];
+  names: string[] | null;
+  modes: ('i' | 'o' | 'b' | 'v' | 't')[] | null;
+  signature: string;
+  comment: string | null;
+}

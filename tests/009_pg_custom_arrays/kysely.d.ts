@@ -6,6 +6,17 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Address = string;
+
+  export interface AddressValue {
+    /**
+     * @required true
+     */
+    "city": (string) | null;
+  }
+
+  export type Flag = "on" | "off";
+
   export interface CustomArrayTable {
     /**
      * @required true
@@ -30,10 +41,6 @@ declare module "odb/kysely/public" {
   export type NewCustomArray = Insertable<CustomArrayTable>;
 
   export type CustomArrayUpdate = Updateable<CustomArrayTable>;
-
-  export interface Database {
-    "custom_array": CustomArrayTable;
-  }
 }
 
 declare module "odb/kysely" {

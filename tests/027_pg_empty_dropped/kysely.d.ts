@@ -23,11 +23,6 @@ declare module "odb/kysely/public" {
   export type NewEmpty = Insertable<EmptyTable>;
 
   export type EmptyUpdate = Updateable<EmptyTable>;
-
-  export interface Database {
-    "emptied": EmptiedTable;
-    "empty": EmptyTable;
-  }
 }
 
 declare module "odb/kysely" {

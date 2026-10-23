@@ -33,11 +33,6 @@ declare module "odb/kysely/public" {
   export type NewSmallReference = Insertable<SmallReferenceTable>;
 
   export type SmallReferenceUpdate = Updateable<SmallReferenceTable>;
-
-  export interface Database {
-    "big_key": BigKeyTable;
-    "small_reference": SmallReferenceTable;
-  }
 }
 
 declare module "odb/kysely" {

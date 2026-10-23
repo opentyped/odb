@@ -37,10 +37,6 @@ declare module "odb/public" {
      */
     "polygon_value": (string) | null;
   }
-
-  export interface Database {
-    "geometry": Geometry;
-  }
 }
 
 declare module "odb" {

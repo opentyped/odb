@@ -31,11 +31,6 @@ declare module "odb/public" {
      */
     "id": number;
   }
-
-  export interface Database {
-    "child": Child;
-    "parent": Parent;
-  }
 }
 
 declare module "odb" {

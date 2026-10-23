@@ -36,11 +36,6 @@ declare module "odb/main" {
      */
     "Id": ParentId;
   }
-
-  export interface Database {
-    "Child": Child;
-    "Parent": Parent;
-  }
 }
 
 declare module "odb" {

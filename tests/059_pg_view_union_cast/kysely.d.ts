@@ -23,10 +23,6 @@ declare module "odb/kysely/public" {
   export type NewUnionValue = Insertable<UnionValueTable>;
 
   export type UnionValueUpdate = Updateable<UnionValueTable>;
-
-  export interface Database {
-    "union_value": UnionValueTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "columns": {
+    "a.b.c.id": "number"
+  }
+}

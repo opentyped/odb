@@ -4,6 +4,33 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Asset = string;
+
+  export interface AssetValue {
+    /**
+     * @required true
+     */
+    "label": (string) | null;
+    /**
+     * @required true
+     */
+    "money": (string) | null;
+  }
+
+  export type MoneyValue = string;
+
+  export interface MoneyValueValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     * @maxLength 3
+     */
+    "currency": (string) | null;
+  }
+
   /**
    * @schema
    */
@@ -30,11 +57,6 @@ declare module "odb/public" {
      * @required true
      */
     "value": (string) | null;
-  }
-
-  export interface Database {
-    "holder": Holder;
-    "seed": Seed;
   }
 }
 

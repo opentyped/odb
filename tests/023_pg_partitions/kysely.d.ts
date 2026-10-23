@@ -56,12 +56,6 @@ declare module "odb/kysely/public" {
   export type NewEventUs = Insertable<EventUsTable>;
 
   export type EventUsUpdate = Updateable<EventUsTable>;
-
-  export interface Database {
-    "event": EventTable;
-    "event_eu": EventEuTable;
-    "event_us": EventUsTable;
-  }
 }
 
 declare module "odb/kysely" {

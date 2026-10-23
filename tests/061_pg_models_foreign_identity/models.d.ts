@@ -13,10 +13,6 @@ declare module "odb/billing" {
      */
     "user_id": import("odb/public").UsersId;
   }
-
-  export interface Database {
-    "membership": Membership;
-  }
 }
 
 declare module "odb/public" {
@@ -54,11 +50,6 @@ declare module "odb/public" {
      * @required true
      */
     "id": UsersId;
-  }
-
-  export interface Database {
-    "profiles": Profiles;
-    "users": Users;
   }
 }
 

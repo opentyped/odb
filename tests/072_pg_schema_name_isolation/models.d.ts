@@ -13,10 +13,6 @@ declare module "odb/other" {
      */
     "value": number;
   }
-
-  export interface Database {
-    "account_table": AccountTable;
-  }
 }
 
 declare module "odb/public" {
@@ -32,10 +28,6 @@ declare module "odb/public" {
      * @required true
      */
     "value": number;
-  }
-
-  export interface Database {
-    "account": Account;
   }
 }
 

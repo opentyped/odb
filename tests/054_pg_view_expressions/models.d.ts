@@ -4,6 +4,8 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type State = "open" | "closed";
+
   /**
    * @schema
    */
@@ -48,11 +50,6 @@ declare module "odb/public" {
      * @jsonSchema {}
      */
     "body": JsonValue;
-  }
-
-  export interface Database {
-    "derived": Derived;
-    "source": Source;
   }
 }
 

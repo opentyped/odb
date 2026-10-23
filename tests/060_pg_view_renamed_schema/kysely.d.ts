@@ -41,11 +41,6 @@ declare module "odb/kysely/analytics" {
   export type NewNamed = Insertable<NamedTable>;
 
   export type NamedUpdate = Updateable<NamedTable>;
-
-  export interface Database {
-    "copy": CopyTable;
-    "named": NamedTable;
-  }
 }
 
 declare module "odb/kysely/public" {
@@ -72,10 +67,6 @@ declare module "odb/kysely/public" {
   export type NewSource = Insertable<SourceTable>;
 
   export type SourceUpdate = Updateable<SourceTable>;
-
-  export interface Database {
-    "source": SourceTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -4,6 +4,8 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Mood = "ok" | "quote'd" | "with space" | "☃" | "line\nbreak" | "";
+
   /**
    * @schema
    */
@@ -16,10 +18,6 @@ declare module "odb/public" {
      * @required true
      */
     "previous": ("ok" | "quote'd" | "with space" | "☃" | "line\nbreak" | "") | null;
-  }
-
-  export interface Database {
-    "feeling": Feeling;
   }
 }
 

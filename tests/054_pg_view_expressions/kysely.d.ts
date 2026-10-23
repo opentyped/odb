@@ -6,6 +6,8 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type State = "open" | "closed";
+
   export interface DerivedTable {
     /**
      * @required true
@@ -57,11 +59,6 @@ declare module "odb/kysely/public" {
   export type NewSource = Insertable<SourceTable>;
 
   export type SourceUpdate = Updateable<SourceTable>;
-
-  export interface Database {
-    "derived": DerivedTable;
-    "source": SourceTable;
-  }
 }
 
 declare module "odb/kysely" {

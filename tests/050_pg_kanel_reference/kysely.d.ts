@@ -12,7 +12,7 @@ declare module "odb/kysely/billing" {
     /**
      * @required true
      */
-    "id": ColumnType<(string) | null, never, never>;
+    "id": ColumnType<import("odb/kysely/public").AccountId | null, never, never>;
     /**
      * @required true
      */
@@ -50,11 +50,6 @@ declare module "odb/kysely/billing" {
   export type NewInvoice = Insertable<InvoiceTable>;
 
   export type InvoiceUpdate = Updateable<InvoiceTable>;
-
-  export interface Database {
-    "account_view": AccountViewTable;
-    "invoice": InvoiceTable;
-  }
 }
 
 declare module "odb/kysely/public" {
@@ -63,6 +58,10 @@ declare module "odb/kysely/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Price = string;
+
+  export type Role = "member" | "admin";
 
   export type AccountId = (string) & { readonly __brand: "public.account.id" };
 
@@ -103,10 +102,6 @@ declare module "odb/kysely/public" {
   export type NewAccount = Insertable<AccountTable>;
 
   export type AccountUpdate = Updateable<AccountTable>;
-
-  export interface Database {
-    "account": AccountTable;
-  }
 }
 
 declare module "odb/kysely" {

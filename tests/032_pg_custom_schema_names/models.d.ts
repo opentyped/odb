@@ -4,6 +4,15 @@ declare module "odb/billing" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Money = import('~/money').BillingMoney;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "cents": (string) | null;
+  }
+
   /**
    * @schema
    */
@@ -13,16 +22,21 @@ declare module "odb/billing" {
      */
     "value": import('~/money').BillingMoney;
   }
-
-  export interface Database {
-    "wallet": Wallet;
-  }
 }
 
 declare module "odb/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Money = import('~/money').Money;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+  }
 
   /**
    * @schema
@@ -32,10 +46,6 @@ declare module "odb/public" {
      * @required true
      */
     "value": import('~/money').Money;
-  }
-
-  export interface Database {
-    "wallet": Wallet;
   }
 }
 

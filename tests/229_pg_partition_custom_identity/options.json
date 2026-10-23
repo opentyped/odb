@@ -1,0 +1,8 @@
+{
+  "dialect": "pg",
+  "identifiers": true,
+  "types": {},
+  "columns": {
+    "public.users.id": "import('./identity.js').UserId"
+  }
+}

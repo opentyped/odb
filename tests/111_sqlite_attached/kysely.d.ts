@@ -18,10 +18,6 @@ declare module "odb/kysely/billing" {
   export type NewAccount = Insertable<AccountTable>;
 
   export type AccountUpdate = Updateable<AccountTable>;
-
-  export interface Database {
-    "account": AccountTable;
-  }
 }
 
 declare module "odb/kysely/main" {
@@ -43,10 +39,6 @@ declare module "odb/kysely/main" {
   export type NewAccount = Insertable<AccountTable>;
 
   export type AccountUpdate = Updateable<AccountTable>;
-
-  export interface Database {
-    "account": AccountTable;
-  }
 }
 
 declare module "odb/kysely/temp" {
@@ -68,10 +60,6 @@ declare module "odb/kysely/temp" {
   export type NewScratch = Insertable<ScratchTable>;
 
   export type ScratchUpdate = Updateable<ScratchTable>;
-
-  export interface Database {
-    "scratch": ScratchTable;
-  }
 }
 
 declare module "odb/kysely" {

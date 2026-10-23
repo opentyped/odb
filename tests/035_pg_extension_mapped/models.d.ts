@@ -13,10 +13,6 @@ declare module "odb/public" {
      */
     "path": import('~/types').TreePath;
   }
-
-  export interface Database {
-    "tree": Tree;
-  }
 }
 
 declare module "odb" {

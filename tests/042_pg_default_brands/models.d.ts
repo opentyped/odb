@@ -25,11 +25,6 @@ declare module "odb/public" {
      */
     "account_id": AccountId | null;
   }
-
-  export interface Database {
-    "account": Account;
-    "note": Note;
-  }
 }
 
 declare module "odb" {

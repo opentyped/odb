@@ -29,10 +29,6 @@ declare module "odb/main" {
      */
     "a": string | number | Uint8Array;
   }
-
-  export interface Database {
-    "storage": Storage;
-  }
 }
 
 declare module "odb" {

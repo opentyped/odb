@@ -22,10 +22,6 @@ declare module "odb/kysely/main" {
   export type NewCustom = Insertable<CustomTable>;
 
   export type CustomUpdate = Updateable<CustomTable>;
-
-  export interface Database {
-    "custom": CustomTable;
-  }
 }
 
 declare module "odb/kysely" {

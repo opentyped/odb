@@ -4,6 +4,10 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type RatingMultirange = string;
+
+  export type RatingRange = string;
+
   /**
    * @schema
    */
@@ -40,10 +44,6 @@ declare module "odb/public" {
      * @required true
      */
     "many": (string) | null;
-  }
-
-  export interface Database {
-    "range_value": RangeValue;
   }
 }
 

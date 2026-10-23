@@ -21,10 +21,6 @@ declare module "odb/main" {
      */
     "real_value": number;
   }
-
-  export interface Database {
-    "big_values": BigValues;
-  }
 }
 
 declare module "odb" {

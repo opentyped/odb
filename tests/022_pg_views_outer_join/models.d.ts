@@ -59,13 +59,6 @@ declare module "odb/public" {
      */
     "name": (string) | null;
   }
-
-  export interface Database {
-    "author": Author;
-    "author_snapshot": AuthorSnapshot;
-    "book": Book;
-    "book_author": BookAuthor;
-  }
 }
 
 declare module "odb" {

@@ -4,6 +4,19 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = import('~/money').Money;
+
+  export interface MonetaryValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     */
+    "currency": (string) | null;
+  }
+
   /**
    * @schema
    */
@@ -32,12 +45,6 @@ declare module "odb/public" {
      * @required true
      */
     "balance": (import('~/money').Money) | null;
-  }
-
-  export interface Database {
-    "account": Account;
-    "account_snapshot": AccountSnapshot;
-    "account_view": AccountView;
   }
 }
 

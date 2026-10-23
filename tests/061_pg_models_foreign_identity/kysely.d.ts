@@ -18,10 +18,6 @@ declare module "odb/kysely/billing" {
   export type NewMembership = Insertable<MembershipTable>;
 
   export type MembershipUpdate = Updateable<MembershipTable>;
-
-  export interface Database {
-    "membership": MembershipTable;
-  }
 }
 
 declare module "odb/kysely/public" {
@@ -68,11 +64,6 @@ declare module "odb/kysely/public" {
   export type NewUsers = Insertable<UsersTable>;
 
   export type UsersUpdate = Updateable<UsersTable>;
-
-  export interface Database {
-    "profiles": ProfilesTable;
-    "users": UsersTable;
-  }
 }
 
 declare module "odb/kysely" {

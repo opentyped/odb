@@ -2,6 +2,37 @@ import type { TypeMapping } from '@opentyped/odb-db';
 
 // Defaults target node-postgres 8's pg-types 2.x text parsers, not SQL storage types.
 export function builtin(name: string): TypeMapping {
+  if (name === 'void') {
+    return { select: 'void' };
+  }
+  if (
+    [
+      'any',
+      'anyelement',
+      'anyarray',
+      'anynonarray',
+      'anyenum',
+      'anyrange',
+      'anymultirange',
+      'anycompatible',
+      'anycompatiblearray',
+      'anycompatiblenonarray',
+      'anycompatiblerange',
+      'anycompatiblemultirange',
+      'record',
+      'internal',
+      'cstring',
+      'trigger',
+      'event_trigger',
+      'language_handler',
+      'fdw_handler',
+      'index_am_handler',
+      'table_am_handler',
+      'tsm_handler',
+    ].includes(name)
+  ) {
+    return { select: 'unknown' };
+  }
   if (['int2', 'int4', 'oid', 'float4', 'float8'].includes(name)) {
     return { select: 'number' };
   }
@@ -32,7 +63,7 @@ export function builtin(name: string): TypeMapping {
   if (name === 'interval') {
     return {
       select:
-        '{ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number }',
+        '{ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number; milliseconds?: number }',
       insert: 'string',
     };
   }

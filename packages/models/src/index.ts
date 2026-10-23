@@ -1,23 +1,25 @@
 import {
   schemaDeclarations,
+  declarationModules,
   documentation,
   propertyDeclaration,
   valueDeclarations,
+  typeDeclarations,
   type DeclarationOptions,
   type Generator,
 } from '@opentyped/odb-db';
 
-/** Pure model interfaces; no Kysely or driver dependency in the generated file. */
 export function models(options: DeclarationOptions): Generator {
   return {
     name: 'odb:models',
     files: options.files,
     generate(database) {
+      const prefix = options.prefix ?? 'odb';
       const contents = schemaDeclarations(
         database,
-        options.prefix ?? 'odb',
+        prefix,
         (database) => {
-          const sections: string[] = [...valueDeclarations];
+          const sections: string[] = [...valueDeclarations, ...typeDeclarations(database)];
           for (const identifier of database.identifiers) {
             sections.push(
               `export type ${identifier.name} = (${identifier.value}) & { readonly __brand: ${JSON.stringify(identifier.brand)} };`,
@@ -34,29 +36,13 @@ export function models(options: DeclarationOptions): Generator {
               ].join('\n'),
             );
           }
-          sections.push(
-            [
-              'export interface Database {',
-              ...database.relations.map(
-                (relation) => `  ${JSON.stringify(relation.key)}: ${relation.typeName};`,
-              ),
-              '}',
-            ].join('\n'),
-          );
+
           return sections;
         },
         '',
       );
-      const prefix = options.prefix ?? 'odb';
       return {
-        modules: [
-          prefix,
-          ...new Set(
-            database.relations.map(
-              (relation) => `${prefix}/${encodeURIComponent(relation.schema)}`,
-            ),
-          ),
-        ],
+        modules: declarationModules(database, prefix),
         files: { [options.files.declarations]: contents },
       };
     },

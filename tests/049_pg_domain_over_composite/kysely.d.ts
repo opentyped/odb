@@ -6,6 +6,17 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type AmountValue = import('~/types').Money;
+
+  export type Monetary = import('~/types').Money;
+
+  export interface MonetaryValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+  }
+
   export interface ExpenseTable {
     /**
      * @required true
@@ -18,10 +29,6 @@ declare module "odb/kysely/public" {
   export type NewExpense = Insertable<ExpenseTable>;
 
   export type ExpenseUpdate = Updateable<ExpenseTable>;
-
-  export interface Database {
-    "expense": ExpenseTable;
-  }
 }
 
 declare module "odb/kysely" {

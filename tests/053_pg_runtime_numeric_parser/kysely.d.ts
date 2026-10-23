@@ -18,10 +18,6 @@ declare module "odb/kysely/public" {
   export type NewPreciseAmounts = Insertable<PreciseAmountsTable>;
 
   export type PreciseAmountsUpdate = Updateable<PreciseAmountsTable>;
-
-  export interface Database {
-    "precise_amounts": PreciseAmountsTable;
-  }
 }
 
 declare module "odb/kysely" {

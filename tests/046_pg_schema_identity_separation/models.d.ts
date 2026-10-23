@@ -15,10 +15,6 @@ declare module "odb/billing" {
      */
     "id": AccountId;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb/public" {
@@ -36,10 +32,6 @@ declare module "odb/public" {
      * @required true
      */
     "id": AccountId;
-  }
-
-  export interface Database {
-    "account": Account;
   }
 }
 

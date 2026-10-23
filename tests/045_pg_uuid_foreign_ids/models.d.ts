@@ -33,11 +33,6 @@ declare module "odb/public" {
      */
     "account_id": AccountId;
   }
-
-  export interface Database {
-    "account": Account;
-    "entry": Entry;
-  }
 }
 
 declare module "odb" {

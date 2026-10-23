@@ -1,0 +1,1 @@
+{ "dialect": "pg", "identifiers": false, "extensions": ["ltree", "hstore"] }

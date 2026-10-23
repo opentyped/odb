@@ -56,12 +56,6 @@ declare module "odb/kysely/main" {
   export type NewBookAuthor = Insertable<BookAuthorTable>;
 
   export type BookAuthorUpdate = Updateable<BookAuthorTable>;
-
-  export interface Database {
-    "author": AuthorTable;
-    "book": BookTable;
-    "book_author": BookAuthorTable;
-  }
 }
 
 declare module "odb/kysely" {

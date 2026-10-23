@@ -13,10 +13,6 @@ declare module "odb/public" {
      */
     "values": PgArray<string>;
   }
-
-  export interface Database {
-    "precise_amounts": PreciseAmounts;
-  }
 }
 
 declare module "odb" {

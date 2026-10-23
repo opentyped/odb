@@ -4,6 +4,17 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Address = string;
+
+  export interface AddressValue {
+    /**
+     * @required true
+     */
+    "city": (string) | null;
+  }
+
+  export type Flag = "on" | "off";
+
   /**
    * @schema
    */
@@ -24,10 +35,6 @@ declare module "odb/public" {
      * @required true
      */
     "multi": (string) | null;
-  }
-
-  export interface Database {
-    "custom_array": CustomArray;
   }
 }
 

@@ -23,11 +23,6 @@ declare module "odb/public" {
      */
     "account_id": Exclude<import('./types.js').AccountId, null>;
   }
-
-  export interface Database {
-    "account": Account;
-    "profile": Profile;
-  }
 }
 
 declare module "odb" {

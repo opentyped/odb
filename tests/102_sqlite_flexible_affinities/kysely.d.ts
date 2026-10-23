@@ -42,10 +42,6 @@ declare module "odb/kysely/main" {
   export type NewAffinity = Insertable<AffinityTable>;
 
   export type AffinityUpdate = Updateable<AffinityTable>;
-
-  export interface Database {
-    "affinity": AffinityTable;
-  }
 }
 
 declare module "odb/kysely" {

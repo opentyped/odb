@@ -22,10 +22,6 @@ declare module "odb/kysely/main" {
   export type NewDescending = Insertable<DescendingTable>;
 
   export type DescendingUpdate = Updateable<DescendingTable>;
-
-  export interface Database {
-    "descending": DescendingTable;
-  }
 }
 
 declare module "odb/kysely" {

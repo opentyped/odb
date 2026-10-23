@@ -36,7 +36,7 @@ declare module "odb/kysely/public" {
     /**
      * @required true
      */
-    "duration": ColumnType<{ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number }, string, string>;
+    "duration": ColumnType<{ years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number; milliseconds?: number }, string, string>;
     /**
      * @required true
      */
@@ -52,10 +52,6 @@ declare module "odb/kysely/public" {
   export type NewSample = Insertable<SampleTable>;
 
   export type SampleUpdate = Updateable<SampleTable>;
-
-  export interface Database {
-    "sample": SampleTable;
-  }
 }
 
 declare module "odb/kysely" {

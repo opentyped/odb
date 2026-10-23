@@ -6,6 +6,20 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type State = "yes" | "no";
+
+  export interface ReadStateParameters {
+    [key: string]: never;
+  }
+
+  export interface ReadStateResult {
+    "status": ("yes" | "no") | null;
+    "count": (string) | null;
+    "document": JsonValue;
+  }
+
+  export type ReadStateRows = ReadStateResult[];
+
   export interface FunctionalTable {
     /**
      * @required true
@@ -49,11 +63,6 @@ declare module "odb/kysely/public" {
   export type NewFunctionalSnapshot = Insertable<FunctionalSnapshotTable>;
 
   export type FunctionalSnapshotUpdate = Updateable<FunctionalSnapshotTable>;
-
-  export interface Database {
-    "functional": FunctionalTable;
-    "functional_snapshot": FunctionalSnapshotTable;
-  }
 }
 
 declare module "odb/kysely" {

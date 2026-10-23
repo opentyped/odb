@@ -26,10 +26,6 @@ declare module "odb/kysely/main" {
   export type NewOrdinary = Insertable<OrdinaryTable>;
 
   export type OrdinaryUpdate = Updateable<OrdinaryTable>;
-
-  export interface Database {
-    "ordinary": OrdinaryTable;
-  }
 }
 
 declare module "odb/kysely" {

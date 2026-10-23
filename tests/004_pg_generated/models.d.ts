@@ -21,10 +21,6 @@ declare module "odb/public" {
      */
     "full_name": (string) | null;
   }
-
-  export interface Database {
-    "computed": Computed;
-  }
 }
 
 declare module "odb" {

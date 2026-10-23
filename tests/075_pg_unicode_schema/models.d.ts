@@ -13,10 +13,6 @@ declare module "odb/%E6%97%A5%E6%9C%AC" {
      */
     "value": string;
   }
-
-  export interface Database {
-    "entry": Entry;
-  }
 }
 
 declare module "odb" {

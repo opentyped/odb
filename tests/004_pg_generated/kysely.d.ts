@@ -26,10 +26,6 @@ declare module "odb/kysely/public" {
   export type NewComputed = Insertable<ComputedTable>;
 
   export type ComputedUpdate = Updateable<ComputedTable>;
-
-  export interface Database {
-    "computed": ComputedTable;
-  }
 }
 
 declare module "odb/kysely" {

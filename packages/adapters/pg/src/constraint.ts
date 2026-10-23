@@ -3,7 +3,10 @@ import type { Annotations, Check } from '@opentyped/odb-db';
 /** Only infer an entire simple conjunct; never extract a predicate from OR/NOT expressions. */
 export function lengthConstraints(checks: readonly Check[], column: string): Annotations {
   const result: Annotations = {};
-  const escaped = column.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replaceAll('"', '""');
+  const escaped = [...column]
+    .map((character) => ('\\^$.*+?()[]{}|'.includes(character) ? `\\${character}` : character))
+    .join('')
+    .replaceAll('"', '""');
   const identifier = column === 'VALUE' ? 'VALUE' : `(?:"${escaped}"|${escaped})`;
   const operand = `\\(?${identifier}\\)?(?:::text)?`;
   for (const check of checks) {

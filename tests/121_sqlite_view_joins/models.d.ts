@@ -45,12 +45,6 @@ declare module "odb/main" {
      */
     "name": (string | number | Uint8Array) | null;
   }
-
-  export interface Database {
-    "author": Author;
-    "book": Book;
-    "book_author": BookAuthor;
-  }
 }
 
 declare module "odb" {

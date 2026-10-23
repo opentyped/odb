@@ -47,13 +47,6 @@ declare module "odb/public" {
      */
     "value": AId | BId | null;
   }
-
-  export interface Database {
-    "a": A;
-    "b": B;
-    "common": Common;
-    "reference": Reference;
-  }
 }
 
 declare module "odb" {

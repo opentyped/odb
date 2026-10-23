@@ -13,10 +13,6 @@ declare module "odb/main" {
      */
     "id": number;
   }
-
-  export interface Database {
-    "item": Item;
-  }
 }
 
 declare module "odb" {

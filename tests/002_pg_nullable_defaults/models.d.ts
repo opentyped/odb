@@ -29,10 +29,6 @@ declare module "odb/public" {
      */
     "null_default": string;
   }
-
-  export interface Database {
-    "optional": Optional;
-  }
 }
 
 declare module "odb" {

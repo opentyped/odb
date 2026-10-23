@@ -26,10 +26,6 @@ declare module "odb/kysely/main" {
   export type NewOrderItem = Insertable<OrderItemTable>;
 
   export type OrderItemUpdate = Updateable<OrderItemTable>;
-
-  export interface Database {
-    "order item": OrderItemTable;
-  }
 }
 
 declare module "odb/kysely" {

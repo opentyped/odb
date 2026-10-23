@@ -13,10 +13,6 @@ declare module "odb/billing" {
      */
     "currency": "usd" | "eur";
   }
-
-  export interface Database {
-    "invoice": Invoice;
-  }
 }
 
 declare module "odb" {

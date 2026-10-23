@@ -25,10 +25,6 @@ declare module "odb/main" {
      */
     "optional": (string) | null;
   }
-
-  export interface Database {
-    "limited": Limited;
-  }
 }
 
 declare module "odb" {

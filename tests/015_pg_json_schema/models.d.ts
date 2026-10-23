@@ -4,6 +4,13 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export interface JsonbMatchesSchemaParameters {
+    "arg1": (string) | null;
+    "arg2": (string) | null;
+  }
+
+  export type JsonbMatchesSchemaResult = (boolean) | null;
+
   /**
    * @schema
    */
@@ -13,10 +20,6 @@ declare module "odb/public" {
      * @jsonSchema {}
      */
     "data": JsonValue;
-  }
-
-  export interface Database {
-    "validated": Validated;
   }
 }
 

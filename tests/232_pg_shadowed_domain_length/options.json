@@ -1,0 +1,5 @@
+{
+  "dialect": "pg",
+  "identifiers": false,
+  "exclude": ["public.length"]
+}

@@ -18,10 +18,6 @@ declare module "custom/odb/kysely/public" {
   export type NewPlain = Insertable<PlainTable>;
 
   export type PlainUpdate = Updateable<PlainTable>;
-
-  export interface Database {
-    "plain": PlainTable;
-  }
 }
 
 declare module "custom/odb/kysely" {

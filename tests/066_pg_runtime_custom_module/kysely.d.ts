@@ -6,6 +6,20 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = import('./money.js').Monetary;
+
+  export interface MonetaryValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+    /**
+     * @required true
+     * @maxLength 3
+     */
+    "currency": (string) | null;
+  }
+
   export interface WalletTable {
     /**
      * @required true
@@ -44,12 +58,6 @@ declare module "odb/kysely/public" {
   export type NewWalletView = Insertable<WalletViewTable>;
 
   export type WalletViewUpdate = Updateable<WalletViewTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-    "wallet_snapshot": WalletSnapshotTable;
-    "wallet_view": WalletViewTable;
-  }
 }
 
 declare module "odb/kysely" {

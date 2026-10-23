@@ -5,6 +5,11 @@ declare module "odb/public" {
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
   /**
+   * @maxLength 12
+   */
+  export type Label = string;
+
+  /**
    * @schema
    */
   export interface Author {
@@ -49,13 +54,6 @@ declare module "odb/public" {
      * @maxLength 12
      */
     "name": (string) | null;
-  }
-
-  export interface Database {
-    "author": Author;
-    "book": Book;
-    "joined": Joined;
-    "snapshot": Snapshot;
   }
 }
 

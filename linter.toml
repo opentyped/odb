@@ -24,9 +24,9 @@ case_sensitive = false
 # description explains why the document/test belongs here, not how its content is validated.
 # Example: docs/goal.md is allowed; an unmatched root notes.md remains forbidden.
 [[rules.layout]]
-target = ["README.md", "docs/*.md"]
+target = ["README.md", "AGENTS.md", "docs/*.md"]
 allow = true
-description = "Documents the project goal and design."
+description = "Documents the project goal, agent requirements, and design."
 
 # Check a file's name without its final extension, or a directory's full name.
 # Words split at underscores, hyphens and camel-case boundaries; max_words limits their count.

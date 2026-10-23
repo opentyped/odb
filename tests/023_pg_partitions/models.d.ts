@@ -45,12 +45,6 @@ declare module "odb/public" {
      */
     "region": string;
   }
-
-  export interface Database {
-    "event": Event;
-    "event_eu": EventEu;
-    "event_us": EventUs;
-  }
 }
 
 declare module "odb" {

@@ -1,0 +1,11 @@
+CREATE TABLE t (value integer NOT NULL);
+
+CREATE FUNCTION perform_task () RETURNS void LANGUAGE sql AS $$SELECT 1$$;
+
+CREATE FUNCTION trigger_task () RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RETURN NEW;END$$;
+
+CREATE TRIGGER t_insert
+BEFORE INSERT ON t FOR EACH ROW
+EXECUTE FUNCTION trigger_task ();
+
+CREATE FUNCTION event_task () RETURNS event_trigger LANGUAGE plpgsql AS $$BEGIN RETURN;END$$;

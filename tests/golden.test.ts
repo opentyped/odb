@@ -5,8 +5,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { test } from 'node:test';
 import { DatabaseSync } from 'node:sqlite';
 import pg from 'pg';
+import { randomUUID } from 'node:crypto';
 import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
 import { processDatabase, type Config as KanelConfig } from 'kanel';
+import { Kysely, PostgresDialect as KyselyPostgresDialect } from 'kysely';
+import { generate as codegen, PostgresDialect as CodegenPostgresDialect } from 'kysely-codegen';
 import { PGlite } from '@electric-sql/pglite';
 import { ltree } from '@electric-sql/pglite/contrib/ltree';
 import { hstore } from '@electric-sql/pglite/contrib/hstore';
@@ -24,10 +27,53 @@ import { postgres } from '@opentyped/odb-adapters-pg';
 import { sqlite, type SqliteClient } from '@opentyped/odb-adapters-sqlite';
 import { models } from '@opentyped/odb-models';
 import { kysely } from '@opentyped/odb-kysely';
-import { writeFiles } from '@opentyped/odb-db/write';
+import { writeFiles, verifyFiles } from '@opentyped/odb-db/write';
+
+/** Each fixture owns a fresh database; the supplied maintenance database is never modified. */
+async function postgresFixture(maintenanceUrl: string): Promise<{
+  client: pg.Pool;
+  connectionString: string;
+  close(): Promise<void>;
+}> {
+  const database = `odb_test_${randomUUID().replaceAll('-', '')}`;
+  const admin = new pg.Pool({ connectionString: maintenanceUrl, max: 1 });
+  let created = false;
+  let client: pg.Pool | undefined;
+  try {
+    await admin.query(`CREATE DATABASE "${database}"`);
+    created = true;
+    const url = new URL(maintenanceUrl);
+    url.pathname = `/${database}`;
+    const connectionString = url.toString();
+    client = new pg.Pool({ connectionString, max: 1 });
+    await client.query('SELECT 1');
+    const pool = client;
+    return {
+      client: pool,
+      connectionString,
+      async close() {
+        try {
+          await pool.end();
+          await admin.query(`DROP DATABASE "${database}" WITH (FORCE)`);
+        } finally {
+          await admin.end();
+        }
+      },
+    };
+  } catch (error) {
+    try {
+      await client?.end();
+      if (created) await admin.query(`DROP DATABASE "${database}" WITH (FORCE)`);
+    } finally {
+      await admin.end();
+    }
+    throw error;
+  }
+}
 
 interface Options extends ResolveOptions {
   dialect: 'pg' | 'sqlite';
+  partitions?: boolean;
   schemas?: string[];
   integers?: 'number' | 'bigint';
   prefix?: string;
@@ -156,43 +202,61 @@ for (const name of cases)
     let connectionString: string | undefined;
     let execute: (sql: string) => Promise<void>;
     if (options.dialect === 'pg') {
-      const extensions = Object.fromEntries(
-        (options.extensions ?? []).map((name) => [name, { ltree, hstore, citext }[name]]),
-      );
-      const client = new PGlite({ extensions });
-      let closeSocket: (() => Promise<void>) | undefined;
-      t.after(async () => {
-        await closeSocket?.();
-        await client.close();
-      });
-      await client.exec(sql);
-      execute = async (sql) => {
-        await client.exec(sql);
-      };
-      let queryClient: typeof client | pg.Pool = client;
-      if (entries.includes('runtime.ts') || entries.includes('kanel.json')) {
-        const socket = new PGLiteSocketServer({
-          db: client,
-          port: 0,
-          host: '127.0.0.1',
-          maxConnections: 20,
-        });
-        await socket.start();
-        connectionString = `postgresql://postgres:postgres@${socket.getServerConn()}/postgres`;
-        const pool = new pg.Pool({ connectionString, max: 1 });
-        closeSocket = async () => {
-          await pool.end();
-          await socket.stop();
+      let queryClient: PGlite | pg.Pool;
+      if (process.env.ODB_TEST_DATABASE_URL) {
+        const fixture = await postgresFixture(process.env.ODB_TEST_DATABASE_URL);
+        t.after(() => fixture.close());
+        queryClient = fixture.client;
+        connectionString = fixture.connectionString;
+        execute = async (sql) => {
+          await fixture.client.query(sql);
         };
-        queryClient = pool;
+        await execute(sql);
+      } else {
+        const extensions = Object.fromEntries(
+          (options.extensions ?? []).map((name) => [name, { ltree, hstore, citext }[name]]),
+        );
+        const client = new PGlite({ extensions });
+        let closeSocket: (() => Promise<void>) | undefined;
+        t.after(async () => {
+          await closeSocket?.();
+          await client.close();
+        });
+        await client.exec(sql);
+        execute = async (sql) => {
+          await client.exec(sql);
+        };
+        queryClient = client;
+        if (
+          entries.includes('runtime.ts') ||
+          entries.includes('kanel.json') ||
+          entries.includes('codegen.json')
+        ) {
+          const socket = new PGLiteSocketServer({
+            db: client,
+            port: 0,
+            host: '127.0.0.1',
+            maxConnections: 20,
+          });
+          await socket.start();
+          connectionString = `postgresql://postgres:postgres@${socket.getServerConn()}/postgres`;
+          const pool = new pg.Pool({ connectionString, max: 1 });
+          closeSocket = async () => {
+            await pool.end();
+            await socket.stop();
+          };
+          queryClient = pool;
+        }
       }
       source = postgres({
         client: queryClient,
+        ...(options.partitions !== undefined ? { partitions: options.partitions } : {}),
         ...(options.schemas ? { schemas: options.schemas } : {}),
       });
     } else {
       const filename = path.join(root, 'database.sqlite');
       const client = new DatabaseSync(options.fileSource ? filename : ':memory:');
+      if (options.fileSource) connectionString = filename;
       t.after(() => client.close());
       client.exec(sql);
       execute = async (sql) => {
@@ -263,6 +327,15 @@ for (const name of cases)
     }
     const result = await generate(config);
     assert.equal(reads, 1, 'All generators must share one database scan');
+    if (options.dialect === 'pg')
+      assert.deepEqual(
+        result.database.warnings.filter((warning) =>
+          warning.includes('View provenance unavailable'),
+        ),
+        [],
+        'Valid catalog trees must parse without losing provenance',
+      );
+
     assert.deepEqual(Object.keys(result.files).sort(), ['kysely.d.ts', 'models.d.ts']);
     for (const [file, contents] of Object.entries(result.files))
       assert.equal(
@@ -311,6 +384,33 @@ for (const name of cases)
           `${name}/kanel/${file}`,
         );
     }
+    if (entries.includes('codegen.json')) {
+      assert.equal(options.dialect, 'pg');
+      assert.ok(connectionString);
+      const config = JSON.parse(await readFile(path.join(fixture, 'codegen.json'), 'utf8'));
+      const db = new Kysely({
+        dialect: new KyselyPostgresDialect({ pool: new pg.Pool({ connectionString, max: 1 }) }),
+      });
+      try {
+        const actual = await codegen({
+          db,
+          dialect: new CodegenPostgresDialect({
+            domains: true,
+            partitions: options.partitions ?? true,
+          }),
+          outFile: null,
+          ...config,
+        });
+        assert.equal(
+          actual,
+          await readFile(path.join(fixture, 'codegen.d.ts'), 'utf8'),
+          `${name}/codegen.d.ts: upstream reference changed`,
+        );
+        await writeFile(path.join(root, 'codegen.d.ts'), actual);
+      } finally {
+        await db.destroy();
+      }
+    }
     const modelModule = options.prefix ?? 'odb';
     const tableModule = `${modelModule}/kysely`;
     const aliases = result.database.relations
@@ -345,6 +445,7 @@ export type SelectedModels = Assert<false extends { [K in keyof Tables]: Equal<M
         'models.d.ts',
         'kysely.d.ts',
         'contract.ts',
+        ...(entries.includes('codegen.json') ? ['codegen.d.ts'] : []),
         ...(entries.includes('usage.ts') ? ['usage.ts'] : []),
         ...(entries.includes('runtime.ts') ? ['runtime.ts'] : []),
       ],
@@ -402,6 +503,14 @@ test('Source and generator boundary errors do not produce partial files', async 
   const root = await mkdtemp(path.join(directory, '.golden-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const database: Database = { dialect: 'pg', types: [], relations: [], warnings: [] };
+  const artifact = { files: { 'verify.d.ts': 'expected' } };
+  await assert.rejects(verifyFiles(artifact, root), /Generated files are stale: verify.d.ts/);
+  await writeFiles(artifact, root);
+  await verifyFiles(artifact, root);
+  await writeFile(path.join(root, 'verify.d.ts'), 'stale');
+  await assert.rejects(verifyFiles(artifact, root), /Generated files are stale: verify.d.ts/);
+  assert.equal(await readFile(path.join(root, 'verify.d.ts'), 'utf8'), 'stale');
+
   const source: Source = { read: async () => database };
   const first = models({ files: { declarations: 'models.d.ts' } });
   await assert.rejects(

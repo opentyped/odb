@@ -35,11 +35,6 @@ declare module "odb/main" {
      */
     "value": number;
   }
-
-  export interface Database {
-    "computed": Computed;
-    "source": Source;
-  }
 }
 
 declare module "odb" {

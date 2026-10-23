@@ -56,12 +56,6 @@ declare module "odb/kysely/main" {
   export type NewExpressionView = Insertable<ExpressionViewTable>;
 
   export type ExpressionViewUpdate = Updateable<ExpressionViewTable>;
-
-  export interface Database {
-    "account": AccountTable;
-    "account_view": AccountViewTable;
-    "expression_view": ExpressionViewTable;
-  }
 }
 
 declare module "odb/kysely" {

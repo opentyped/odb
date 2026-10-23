@@ -22,10 +22,6 @@ declare module "odb/public" {
      */
     "secret": (string) | null;
   }
-
-  export interface Database {
-    "profile": Profile;
-  }
 }
 
 declare module "odb" {

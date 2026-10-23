@@ -23,10 +23,6 @@ declare module "odb/billing" {
      */
     "label": string;
   }
-
-  export interface Database {
-    "child": Child;
-  }
 }
 
 declare module "odb/public" {
@@ -70,10 +66,6 @@ declare module "odb/public" {
      * @required true
      */
     "bytes": import('node:buffer').Buffer;
-  }
-
-  export interface Database {
-    "parent": Parent;
   }
 }
 

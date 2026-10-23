@@ -19,10 +19,6 @@ declare module "odb/billing" {
      */
     "parent_id": import("odb/public").BillingAccountId;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb/public" {
@@ -40,10 +36,6 @@ declare module "odb/public" {
      * @required true
      */
     "id": BillingAccountId;
-  }
-
-  export interface Database {
-    "billing_account": BillingAccount;
   }
 }
 
@@ -66,10 +58,6 @@ declare module "odb/sales%2Fregion" {
      * @required true
      */
     "billing_id": import("odb/billing").AccountId;
-  }
-
-  export interface Database {
-    "account": Account;
   }
 }
 

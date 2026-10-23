@@ -6,6 +6,10 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Amount = import('~/types').Decimal;
+
+  export type AmountAlias = import('~/types').Decimal;
+
   export interface TotalTable {
     /**
      * @required true
@@ -18,10 +22,6 @@ declare module "odb/kysely/public" {
   export type NewTotal = Insertable<TotalTable>;
 
   export type TotalUpdate = Updateable<TotalTable>;
-
-  export interface Database {
-    "total": TotalTable;
-  }
 }
 
 declare module "odb/kysely" {

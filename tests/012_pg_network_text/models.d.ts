@@ -58,10 +58,6 @@ declare module "odb/public" {
      */
     "oid_value": number;
   }
-
-  export interface Database {
-    "network": Network;
-  }
 }
 
 declare module "odb" {

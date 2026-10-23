@@ -6,6 +6,10 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Balance = import('decimal.js').Decimal;
+
+  export type Monetary = import('decimal.js').Decimal;
+
   export interface WalletTable {
     /**
      * @required true
@@ -22,10 +26,6 @@ declare module "odb/kysely/public" {
   export type NewWallet = Insertable<WalletTable>;
 
   export type WalletUpdate = Updateable<WalletTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-  }
 }
 
 declare module "odb/kysely" {

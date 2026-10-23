@@ -54,10 +54,6 @@ declare module "odb/kysely/public" {
   export type NewArrayValue = Insertable<ArrayValueTable>;
 
   export type ArrayValueUpdate = Updateable<ArrayValueTable>;
-
-  export interface Database {
-    "array_value": ArrayValueTable;
-  }
 }
 
 declare module "odb/kysely" {

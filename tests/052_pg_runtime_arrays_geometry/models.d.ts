@@ -37,7 +37,7 @@ declare module "odb/public" {
     /**
      * @required true
      */
-    "duration": { years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number };
+    "duration": { years?: number; months?: number; days?: number; hours?: number; minutes?: number; seconds?: number; milliseconds?: number };
     /**
      * @required true
      */
@@ -46,10 +46,6 @@ declare module "odb/public" {
      * @required true
      */
     "jsons": PgArray<JsonValue>;
-  }
-
-  export interface Database {
-    "sample": Sample;
   }
 }
 

@@ -4,6 +4,8 @@ declare module "odb/alpha" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Code = string;
+
   /**
    * @schema
    */
@@ -13,16 +15,14 @@ declare module "odb/alpha" {
      */
     "code": string;
   }
-
-  export interface Database {
-    "entry": Entry;
-  }
 }
 
 declare module "odb/beta" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Code = number;
 
   /**
    * @schema
@@ -32,10 +32,6 @@ declare module "odb/beta" {
      * @required true
      */
     "code": number;
-  }
-
-  export interface Database {
-    "entry": Entry;
   }
 }
 

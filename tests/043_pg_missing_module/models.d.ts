@@ -4,6 +4,15 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Money = import('./absent.js').Money;
+
+  export interface MoneyValue {
+    /**
+     * @required true
+     */
+    "amount": (string) | null;
+  }
+
   /**
    * @schema
    */
@@ -12,10 +21,6 @@ declare module "odb/public" {
      * @required true
      */
     "value": import('./absent.js').Money;
-  }
-
-  export interface Database {
-    "wallet": Wallet;
   }
 }
 

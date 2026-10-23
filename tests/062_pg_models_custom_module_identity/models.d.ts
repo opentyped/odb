@@ -23,11 +23,6 @@ declare module "odb/public" {
      */
     "id": import('~/types').UserID;
   }
-
-  export interface Database {
-    "profile": Profile;
-    "users": Users;
-  }
 }
 
 declare module "odb" {

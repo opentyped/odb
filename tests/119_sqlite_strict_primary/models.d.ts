@@ -17,10 +17,6 @@ declare module "odb/main" {
      */
     "name": (string) | null;
   }
-
-  export interface Database {
-    "strict_key": StrictKey;
-  }
 }
 
 declare module "odb" {

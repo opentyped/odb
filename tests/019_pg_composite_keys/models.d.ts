@@ -45,12 +45,6 @@ declare module "odb/public" {
      */
     "id": TenantId;
   }
-
-  export interface Database {
-    "entry": Entry;
-    "link": Link;
-    "tenant": Tenant;
-  }
 }
 
 declare module "odb" {

@@ -17,10 +17,6 @@ declare module "odb/main" {
      */
     "body": (string | number | Uint8Array) | null;
   }
-
-  export interface Database {
-    "document": Document;
-  }
 }
 
 declare module "odb" {

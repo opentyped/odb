@@ -6,6 +6,11 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  /**
+   * @maxLength 12
+   */
+  export type Label = string;
+
   export interface AuthorTable {
     /**
      * @required true
@@ -64,13 +69,6 @@ declare module "odb/kysely/public" {
   export type NewSnapshot = Insertable<SnapshotTable>;
 
   export type SnapshotUpdate = Updateable<SnapshotTable>;
-
-  export interface Database {
-    "author": AuthorTable;
-    "book": BookTable;
-    "joined": JoinedTable;
-    "snapshot": SnapshotTable;
-  }
 }
 
 declare module "odb/kysely" {

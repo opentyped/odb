@@ -35,12 +35,6 @@ declare module "odb/public" {
      */
     "id": AId | null;
   }
-
-  export interface Database {
-    "a": A;
-    "b": B;
-    "c": C;
-  }
 }
 
 declare module "odb" {

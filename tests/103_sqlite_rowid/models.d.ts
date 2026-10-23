@@ -19,10 +19,6 @@ declare module "odb/main" {
      */
     "name": string;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb" {

@@ -6,6 +6,13 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export interface JsonbMatchesSchemaParameters {
+    "arg1": (string) | null;
+    "arg2": (string) | null;
+  }
+
+  export type JsonbMatchesSchemaResult = (boolean) | null;
+
   export interface ValidatedTable {
     /**
      * @required true
@@ -19,10 +26,6 @@ declare module "odb/kysely/public" {
   export type NewValidated = Insertable<ValidatedTable>;
 
   export type ValidatedUpdate = Updateable<ValidatedTable>;
-
-  export interface Database {
-    "validated": ValidatedTable;
-  }
 }
 
 declare module "odb/kysely" {

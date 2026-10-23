@@ -63,10 +63,6 @@ declare module "odb/kysely/public" {
   export type NewNetwork = Insertable<NetworkTable>;
 
   export type NetworkUpdate = Updateable<NetworkTable>;
-
-  export interface Database {
-    "network": NetworkTable;
-  }
 }
 
 declare module "odb/kysely" {

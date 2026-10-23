@@ -61,13 +61,6 @@ declare module "odb/kysely/public" {
   export type NewReference = Insertable<ReferenceTable>;
 
   export type ReferenceUpdate = Updateable<ReferenceTable>;
-
-  export interface Database {
-    "a": ATable;
-    "b": BTable;
-    "common": CommonTable;
-    "reference": ReferenceTable;
-  }
 }
 
 declare module "odb/kysely" {

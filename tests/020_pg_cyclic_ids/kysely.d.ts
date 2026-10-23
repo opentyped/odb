@@ -46,12 +46,6 @@ declare module "odb/kysely/public" {
   export type NewC = Insertable<CTable>;
 
   export type CUpdate = Updateable<CTable>;
-
-  export interface Database {
-    "a": ATable;
-    "b": BTable;
-    "c": CTable;
-  }
 }
 
 declare module "odb/kysely" {

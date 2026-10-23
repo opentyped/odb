@@ -33,11 +33,6 @@ declare module "odb/kysely/public" {
   export type NewNote = Insertable<NoteTable>;
 
   export type NoteUpdate = Updateable<NoteTable>;
-
-  export interface Database {
-    "account": AccountTable;
-    "note": NoteTable;
-  }
 }
 
 declare module "odb/kysely" {

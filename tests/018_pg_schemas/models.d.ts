@@ -20,10 +20,6 @@ declare module "odb/audit" {
      */
     "account_id": import("odb/billing").AccountId | null;
   }
-
-  export interface Database {
-    "entry": Entry;
-  }
 }
 
 declare module "odb/billing" {
@@ -47,10 +43,6 @@ declare module "odb/billing" {
      */
     "account_id": import("odb/public").AccountId;
   }
-
-  export interface Database {
-    "account": Account;
-  }
 }
 
 declare module "odb/public" {
@@ -68,10 +60,6 @@ declare module "odb/public" {
      * @required true
      */
     "id": AccountId;
-  }
-
-  export interface Database {
-    "account": Account;
   }
 }
 

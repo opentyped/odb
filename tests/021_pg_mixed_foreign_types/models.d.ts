@@ -25,11 +25,6 @@ declare module "odb/public" {
      */
     "id": (number) | null;
   }
-
-  export interface Database {
-    "big_key": BigKey;
-    "small_reference": SmallReference;
-  }
 }
 
 declare module "odb" {

@@ -35,10 +35,6 @@ declare module "odb/kysely/public" {
   export type NewCode = Insertable<CodeTable>;
 
   export type CodeUpdate = Updateable<CodeTable>;
-
-  export interface Database {
-    "code": CodeTable;
-  }
 }
 
 declare module "odb/kysely" {

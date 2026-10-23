@@ -31,11 +31,6 @@ declare module "odb/main" {
      */
     "b": (string | number | Uint8Array) | null;
   }
-
-  export interface Database {
-    "composite": Composite;
-    "link": Link;
-  }
 }
 
 declare module "odb" {

@@ -23,11 +23,6 @@ declare module "odb/analytics" {
      */
     "value": number;
   }
-
-  export interface Database {
-    "named": Named;
-    "source": Source;
-  }
 }
 
 declare module "odb/temp" {
@@ -43,10 +38,6 @@ declare module "odb/temp" {
      * @required true
      */
     "value": (string | number | Uint8Array) | null;
-  }
-
-  export interface Database {
-    "cross_schema": CrossSchema;
   }
 }
 

@@ -6,6 +6,8 @@ declare module "odb/kysely/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = string;
+
   export interface AmountsTable {
     /**
      * @required true
@@ -18,10 +20,6 @@ declare module "odb/kysely/public" {
   export type NewAmounts = Insertable<AmountsTable>;
 
   export type AmountsUpdate = Updateable<AmountsTable>;
-
-  export interface Database {
-    "amounts": AmountsTable;
-  }
 }
 
 declare module "odb/kysely" {

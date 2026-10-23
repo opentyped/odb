@@ -18,10 +18,6 @@ declare module "odb/kysely/billing" {
   export type NewInvoice = Insertable<InvoiceTable>;
 
   export type InvoiceUpdate = Updateable<InvoiceTable>;
-
-  export interface Database {
-    "invoice": InvoiceTable;
-  }
 }
 
 declare module "odb/kysely" {

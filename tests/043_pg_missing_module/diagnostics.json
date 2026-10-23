@@ -5,6 +5,16 @@
     "message": "Cannot find module './absent.js' or its corresponding type declarations."
   },
   {
+    "file": "kysely.d.ts",
+    "code": 2307,
+    "message": "Cannot find module './absent.js' or its corresponding type declarations."
+  },
+  {
+    "file": "models.d.ts",
+    "code": 2307,
+    "message": "Cannot find module './absent.js' or its corresponding type declarations."
+  },
+  {
     "file": "models.d.ts",
     "code": 2307,
     "message": "Cannot find module './absent.js' or its corresponding type declarations."

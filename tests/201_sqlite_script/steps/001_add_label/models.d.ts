@@ -17,10 +17,6 @@ declare module "odb/main" {
      */
     "label": string;
   }
-
-  export interface Database {
-    "item": Item;
-  }
 }
 
 declare module "odb" {

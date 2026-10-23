@@ -13,10 +13,6 @@ declare module "odb/sales%2Feast" {
      */
     "value": string;
   }
-
-  export interface Database {
-    "user record": UserRecord;
-  }
 }
 
 declare module "odb/temp" {
@@ -32,10 +28,6 @@ declare module "odb/temp" {
      * @required true
      */
     "value": string;
-  }
-
-  export interface Database {
-    "user record": UserRecord;
   }
 }
 

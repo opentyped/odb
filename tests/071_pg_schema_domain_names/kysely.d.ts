@@ -6,6 +6,8 @@ declare module "odb/kysely/alpha" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Code = string;
+
   export interface EntryTable {
     /**
      * @required true
@@ -18,10 +20,6 @@ declare module "odb/kysely/alpha" {
   export type NewEntry = Insertable<EntryTable>;
 
   export type EntryUpdate = Updateable<EntryTable>;
-
-  export interface Database {
-    "entry": EntryTable;
-  }
 }
 
 declare module "odb/kysely/beta" {
@@ -30,6 +28,8 @@ declare module "odb/kysely/beta" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Code = number;
 
   export interface EntryTable {
     /**
@@ -43,10 +43,6 @@ declare module "odb/kysely/beta" {
   export type NewEntry = Insertable<EntryTable>;
 
   export type EntryUpdate = Updateable<EntryTable>;
-
-  export interface Database {
-    "entry": EntryTable;
-  }
 }
 
 declare module "odb/kysely" {

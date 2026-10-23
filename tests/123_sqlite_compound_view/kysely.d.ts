@@ -31,11 +31,6 @@ declare module "odb/kysely/main" {
   export type NewSource = Insertable<SourceTable>;
 
   export type SourceUpdate = Updateable<SourceTable>;
-
-  export interface Database {
-    "compound": CompoundTable;
-    "source": SourceTable;
-  }
 }
 
 declare module "odb/kysely" {

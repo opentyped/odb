@@ -18,10 +18,6 @@ declare module "odb/kysely/%E6%97%A5%E6%9C%AC" {
   export type NewEntry = Insertable<EntryTable>;
 
   export type EntryUpdate = Updateable<EntryTable>;
-
-  export interface Database {
-    "entry": EntryTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -21,10 +21,6 @@ declare module "odb/main" {
      */
     "quote\"field": (Uint8Array) | null;
   }
-
-  export interface Database {
-    "order item": OrderItem;
-  }
 }
 
 declare module "odb" {

@@ -4,6 +4,8 @@ declare module "odb/billing" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = string;
+
   /**
    * @schema
    */
@@ -13,16 +15,14 @@ declare module "odb/billing" {
      */
     "amount": string;
   }
-
-  export interface Database {
-    "wallet": Wallet;
-  }
 }
 
 declare module "odb/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Monetary = import('decimal.js').Decimal;
 
   /**
    * @schema
@@ -32,10 +32,6 @@ declare module "odb/public" {
      * @required true
      */
     "amount": import('decimal.js').Decimal;
-  }
-
-  export interface Database {
-    "wallet": Wallet;
   }
 }
 

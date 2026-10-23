@@ -6,6 +6,8 @@ declare module "odb/kysely/billing" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Monetary = string;
+
   export interface WalletTable {
     /**
      * @required true
@@ -18,10 +20,6 @@ declare module "odb/kysely/billing" {
   export type NewWallet = Insertable<WalletTable>;
 
   export type WalletUpdate = Updateable<WalletTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-  }
 }
 
 declare module "odb/kysely/public" {
@@ -30,6 +28,8 @@ declare module "odb/kysely/public" {
   export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
+
+  export type Monetary = import('decimal.js').Decimal;
 
   export interface WalletTable {
     /**
@@ -43,10 +43,6 @@ declare module "odb/kysely/public" {
   export type NewWallet = Insertable<WalletTable>;
 
   export type WalletUpdate = Updateable<WalletTable>;
-
-  export interface Database {
-    "wallet": WalletTable;
-  }
 }
 
 declare module "odb/kysely" {

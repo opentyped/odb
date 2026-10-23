@@ -37,10 +37,6 @@ declare module "odb/main" {
      */
     "untyped": (string | number | Uint8Array) | null;
   }
-
-  export interface Database {
-    "affinity": Affinity;
-  }
 }
 
 declare module "odb" {

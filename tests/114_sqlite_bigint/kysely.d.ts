@@ -26,10 +26,6 @@ declare module "odb/kysely/main" {
   export type NewBigValues = Insertable<BigValuesTable>;
 
   export type BigValuesUpdate = Updateable<BigValuesTable>;
-
-  export interface Database {
-    "big_values": BigValuesTable;
-  }
 }
 
 declare module "odb/kysely" {

@@ -23,3 +23,19 @@ const invoice = db
 const legacy: AccountId = null! as KanelAccountId;
 // @ts-expect-error pg returns time as a string, despite Kanel's default Date mapping
 const clock: Date = account.clock!;
+
+import type {
+  DB as CodegenDatabase,
+  Account as CodegenAccount,
+  Role as CodegenRole,
+} from './codegen.js';
+import type { Selectable } from 'kysely';
+import type { Role, Account as PureAccount } from 'odb/public';
+import type { AccountView } from 'odb/billing';
+type CodegenKeys = Assert<Equal<keyof CodegenDatabase, keyof Database>>;
+type CodegenFields = Assert<Equal<keyof Selectable<CodegenAccount>, keyof PureAccount>>;
+type CodegenEnum = Assert<Equal<CodegenRole, Role>>;
+type CodegenTime = Assert<Equal<Selectable<CodegenAccount>['clock'], PureAccount['clock']>>;
+type ViewSourceIdentity = Assert<Equal<AccountView['id'], AccountId | null>>;
+// @ts-expect-error codegen currently loses the NOT NULL constraint of this numeric domain
+const nullableDomain: PureAccount['balance'] = null! as Selectable<CodegenAccount>['balance'];

@@ -42,10 +42,6 @@ declare module "odb/kysely/public" {
   export type NewGeometry = Insertable<GeometryTable>;
 
   export type GeometryUpdate = Updateable<GeometryTable>;
-
-  export interface Database {
-    "geometry": GeometryTable;
-  }
 }
 
 declare module "odb/kysely" {

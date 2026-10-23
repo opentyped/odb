@@ -1,0 +1,6 @@
+{
+  "dialect": "pg",
+  "types": {
+    "a.b.c": "number"
+  }
+}

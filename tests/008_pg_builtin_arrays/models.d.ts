@@ -49,10 +49,6 @@ declare module "odb/public" {
      */
     "ranges": (PgArray<string>) | null;
   }
-
-  export interface Database {
-    "array_value": ArrayValue;
-  }
 }
 
 declare module "odb" {

@@ -51,10 +51,6 @@ declare module "odb/public" {
      */
     "content": string;
   }
-
-  export interface Database {
-    "primitive": Primitive;
-  }
 }
 
 declare module "odb" {

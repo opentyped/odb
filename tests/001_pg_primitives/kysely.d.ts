@@ -56,10 +56,6 @@ declare module "odb/kysely/public" {
   export type NewPrimitive = Insertable<PrimitiveTable>;
 
   export type PrimitiveUpdate = Updateable<PrimitiveTable>;
-
-  export interface Database {
-    "primitive": PrimitiveTable;
-  }
 }
 
 declare module "odb/kysely" {

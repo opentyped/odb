@@ -1,0 +1,2 @@
+No mapping for public.hstore; configure types["public.hstore"] for your driver parser
+No mapping for public.ltree; configure types["public.ltree"] for your driver parser

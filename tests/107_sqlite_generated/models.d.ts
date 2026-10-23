@@ -21,10 +21,6 @@ declare module "odb/main" {
      */
     "size": (number) | null;
   }
-
-  export interface Database {
-    "computed": Computed;
-  }
 }
 
 declare module "odb" {

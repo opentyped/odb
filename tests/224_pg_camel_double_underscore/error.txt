@@ -1,0 +1,1 @@
+SQL identifier "a__b" cannot round-trip through Kysely CamelCasePlugin ("a_b")

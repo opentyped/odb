@@ -4,6 +4,10 @@ declare module "odb/public" {
 
   export type PgArray<T> = Array<T | null | PgArray<T>>;
 
+  export type Balance = import('decimal.js').Decimal;
+
+  export type Monetary = import('decimal.js').Decimal;
+
   /**
    * @schema
    */
@@ -32,12 +36,6 @@ declare module "odb/public" {
      * @required true
      */
     "amount": (import('decimal.js').Decimal) | null;
-  }
-
-  export interface Database {
-    "ledger": Ledger;
-    "ledger_snapshot": LedgerSnapshot;
-    "ledger_view": LedgerView;
   }
 }
 

@@ -33,11 +33,6 @@ declare module "odb/kysely/billing" {
   export type NewUser = Insertable<UserTable>;
 
   export type UserUpdate = Updateable<UserTable>;
-
-  export interface Database {
-    "profile": ProfileTable;
-    "user": UserTable;
-  }
 }
 
 declare module "odb/kysely/main" {
@@ -74,11 +69,6 @@ declare module "odb/kysely/main" {
   export type NewUser = Insertable<UserTable>;
 
   export type UserUpdate = Updateable<UserTable>;
-
-  export interface Database {
-    "profile": ProfileTable;
-    "user": UserTable;
-  }
 }
 
 declare module "odb/kysely" {

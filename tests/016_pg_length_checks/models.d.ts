@@ -29,10 +29,6 @@ declare module "odb/public" {
      */
     "impossible": (string) | null;
   }
-
-  export interface Database {
-    "limited": Limited;
-  }
 }
 
 declare module "odb" {
